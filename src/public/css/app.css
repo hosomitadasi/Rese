@@ -1,0 +1,267 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-box {
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 24px;
+    color: #007bff;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.shop-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.shop-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: calc(33.333% - 40px);
+    position: relative;
+}
+
+.shop-item img {
+    width: 100%;
+    height: auto;
+}
+
+.shop-item h3 {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.shop-item button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.shop-item .favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.shop-item .favorite.active {
+    color: #ff5a5f;
+}
+
+.shop-detail {
+    padding: 20px;
+}
+
+.shop-detail button {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.shop-detail img {
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+}
+
+.reservation-form {
+    background-color: #007bff;
+    padding: 20px;
+    color: #fff;
+}
+
+.reservation-form label {
+    display: block;
+    margin: 10px 0;
+}
+
+.reservation-form button {
+    background-color: #fff;
+    color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.done-message {
+    text-align: center;
+    padding: 50px;
+}
+
+.done-message p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.done-message button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.register-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.register-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.register-form input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.register-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.thanks-message {
+    text-align: center;
+    padding: 50px;
+}
+
+.thanks-message p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.thanks-message button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.login-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.mypage {
+    padding: 20px;
+}
+
+.mypage h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.mypage .reservations,
+.mypage .favorites {
+    margin-bottom: 20px;
+}
+
+.mypage ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mypage li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.mypage button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.mypage .favorite {
+    font-size: 24px;
+    color: #ff5a5f;
+    cursor: pointer;
+}
