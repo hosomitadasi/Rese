@@ -6,14 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\Favorite;
 use App\Models\Reservation;
+use App\Models\Area;
+use App\Models\Genre;
 use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
     public function indexHome()
     {
-        $stores = Store::all();
-        return view('home', compact('stores'));
+        $stores = Store::with('area', 'genre')->get();
+        $areas = Area::all();
+        $genres = Genre::all();
+        return view('home', compact('stores', 'areas', 'genres'));
     }
 
     public function search(Request $request)
@@ -28,8 +32,10 @@ class ShopController extends Controller
         if ($request->name) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
-        $stores = $query->get();
-        return view('home', compact('stores'));
+        $stores = $query->with('area', 'genre')->get();
+        $areas = Area::all();
+        $genres = Genre::all();
+        return view('home', compact('stores', 'areas', 'genres'));
     }
 
     public function indexDetail($id)

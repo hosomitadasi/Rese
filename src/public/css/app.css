@@ -4,8 +4,16 @@
     align-items: center;
     padding: 10px 20px;
     background-color: #fff;
-    border-bottom: 1px solid #ddd;
+    border: none;
 }
+ .graph-icon {
+     margin-left: 5px;
+ }
+
+ .header-logo {
+    color: #007bff;
+    align-items: center;
+ }
 
 .logo {
     display: flex;
@@ -17,11 +25,16 @@
     height: 30px;
     background-color: #007bff;
     margin-right: 10px;
+    box-shadow: 3px 3px 10px #000;
 }
 
 .logo-text {
     font-size: 24px;
     color: #007bff;
+}
+
+li {
+    list-style: none;
 }
 
 .menu ul {
@@ -36,53 +49,61 @@
     font-size: 18px;
 }
 
+/*home.blade.php start*/
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.search-field {
+    margin-left: 10px;
+}
+
 .shop-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+    justify-content: space-around;
 }
 
 .shop-item {
+    width: 23%;
+    margin: 15px 0;
+    text-align: center;
     border: 1px solid #ddd;
     padding: 10px;
-    width: calc(33.333% - 40px);
-    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .shop-item img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
 }
 
 .shop-item h3 {
     margin: 10px 0;
-    font-size: 20px;
+}
+
+.shop-item p {
+    margin: 5px 0;
 }
 
 .shop-item button {
-    display: block;
-    width: 100%;
-    padding: 10px;
     background-color: #007bff;
-    color: #fff;
+    color: white;
     border: none;
+    padding: 5px 10px;
     cursor: pointer;
-    text-align: center;
 }
 
 .shop-item .favorite {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    color: #ccc;
     cursor: pointer;
 }
 
 .shop-item .favorite.active {
-    color: #ff5a5f;
+    color: red;
 }
+/*home.blade.php end*/
 
 .shop-detail {
     padding: 20px;
@@ -121,6 +142,8 @@
     cursor: pointer;
 }
 
+/*done.blade.php start*/
+
 .done-message {
     text-align: center;
     padding: 50px;
@@ -139,6 +162,10 @@
     cursor: pointer;
 }
 
+/*done.blade.php end*/
+
+
+/*register.blade.php start*/
 .register-form {
     max-width: 400px;
     margin: 0 auto;
@@ -172,6 +199,8 @@
     border: none;
     cursor: pointer;
 }
+
+/*register.blade.php end*/
 
 .thanks-message {
     text-align: center;

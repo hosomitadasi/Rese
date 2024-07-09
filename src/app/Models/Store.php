@@ -11,4 +11,14 @@ class Store extends Model
      protected $fillable = [
         'name', 'area_id', 'genre_id', 'overview', 'photo'
     ];
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
 }

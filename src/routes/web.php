@@ -39,4 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('favorite/{id}', [ShopController::class, 'addFavorite']);
     Route::delete('favorite/{id}', [ShopController::class, 'deleteFavorite']);
     Route::get('done', [ShopController::class, 'indexDone'])->name('done');
+    Route::get('menu1', [AuthController::class, 'indexMenu1'])->name('menu1');
 });
+
+Route::get('menu2', [AuthController::class, 'indexMenu2'])->name('menu2');

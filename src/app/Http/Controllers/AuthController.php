@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request; 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
@@ -38,7 +39,10 @@ class AuthController extends Controller
 
     public function postLogin(LoginRequest $request)
     {
+        $credentials = $request->only('email', 'password');
+
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             return redirect()->route('mypage');
         }
 
@@ -48,6 +52,17 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('home');
+
+        return redirect('home');
+    }
+
+      public function indexMenu1()
+    {
+        return view('menu1');
+    }
+
+    public function indexMenu2()
+    {
+        return view('menu2');
     }
 }
