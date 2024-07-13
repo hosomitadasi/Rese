@@ -1,37 +1,42 @@
+body {
+    background-color: #f5f5f5;
+}
+
 .header-container {
+    width: 100%;
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none;
 }
- .graph-icon {
-     margin-left: 5px;
- }
 
- .header-logo {
-    color: #007bff;
-    align-items: center;
- }
-
-.logo {
+.logo-container {
     display: flex;
     align-items: center;
 }
 
-.logo-box {
-    width: 30px;
-    height: 30px;
-    background-color: #007bff;
+.logo-icon{
+    width: 40px;
+    height: 40px;
+    background-color: #3b82f6;
+    border-radius: 8px;
     margin-right: 10px;
     box-shadow: 3px 3px 10px #000;
 }
 
 .logo-text {
     font-size: 24px;
-    color: #007bff;
+    color: #3b82f6;
+    margin: 0;
 }
+
+ .header-logo {
+    color: #007bff;
+    display: flex;
+    align-items: center;
+ }
 
 li {
     list-style: none;
@@ -73,6 +78,7 @@ li {
     border: 1px solid #ddd;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 }
 
 .shop-item img {
@@ -143,7 +149,6 @@ li {
 }
 
 /*done.blade.php start*/
-
 .done-message {
     text-align: center;
     padding: 50px;
@@ -161,7 +166,6 @@ li {
     padding: 10px 20px;
     cursor: pointer;
 }
-
 /*done.blade.php end*/
 
 
@@ -199,26 +203,44 @@ li {
     border: none;
     cursor: pointer;
 }
-
 /*register.blade.php end*/
 
+/*thanks.blade.php start*/
+.thanks-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
 .thanks-message {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 50px;
 }
 
 .thanks-message p {
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 20px;
 }
 
-.thanks-message button {
-    background-color: #007bff;
-    color: #fff;
+.thanks-button {
+    background-color: #3b82f6;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
 }
+
+.thanks-button:hover {
+    background-color: #2563ed;
+}
+/*thanks.blade.php end*/
 
 .login-form {
     max-width: 400px;
@@ -254,43 +276,87 @@ li {
     cursor: pointer;
 }
 
-.mypage {
+/*mypage.blade.php start*/
+.reservations,
+.favorites {
+    margin-top: 20px;
+}
+
+.reservation-card,
+.favorite-card {
+    background-color: #ffffff;
     padding: 20px;
-}
-
-.mypage h2 {
-    font-size: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-}
-
-.mypage .reservations,
-.mypage .favorites {
-    margin-bottom: 20px;
-}
-
-.mypage ul {
-    list-style: none;
-    padding: 0;
-}
-
-.mypage li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
 }
 
-.mypage button {
-    background-color: #007bff;
-    color: #fff;
+.reservation-info {
+    color: #ffffff;
+}
+
+.cancel-button {
+    background-color: #ff0000;
+    color: #ffffff;
     border: none;
     padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 50%;
     cursor: pointer;
 }
 
-.mypage .favorite {
+.cancel-button:hover {
+    background-color: #cc0000;
+}
+
+.favorite-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.favorite-card p {
+    margin: 10px 0;
+}
+
+.favorite-card button {
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.favorite-card button:hover {
+    background-color: #2563eb;
+}
+
+.favorite-card .favorite {
+    color: red;
     font-size: 24px;
-    color: #ff5a5f;
     cursor: pointer;
 }
+
+.favorite-card .favorite.active {
+    color: red;
+}
+
+/*menu.blade.php start*/
+.menu-container {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.menu-container li {
+    color: #007bff;
+    font-size: 20px;
+    padding-bottom: 20px;
+    border: none;
+}
+/*menu.blade.php end*/

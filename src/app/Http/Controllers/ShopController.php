@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ReservationRequest;
 use App\Models\Store;
 use App\Models\Favorite;
 use App\Models\Reservation;
@@ -44,35 +45,37 @@ class ShopController extends Controller
         return view('detail', compact('shop'));
     }
 
-    public function additonByStore(Request $request)
+    public function addReservation(ReservationRequest $request)
     {
 
         Reservation::create([
             'user_id' => Auth::id(),
-            'store_id' => $request->store_id,
+            'store_id' => $request->shop_id,
             'reservation_date' => $request->reservation_date,
             'reservation_time' => $request->reservation_time,
             'num_people' => $request->num_people,
         ]);
+
+        return redirect()->route('done');
     }
 
-    public function additonByFavorite(Request $request)
+    public function addFavorite(Request $request, $id)
     {
-        Favorite::create([
+        $favorite = Favorite::firstOrCreate([
             'user_id' => Auth::id(),
-            'store_id' => $request->store_id,
+            'store_id' => $id,
         ]);
 
-        return back();
+        return back()->with('status', 'お気に入りに追加しました');
     }
 
-     public function deleteByFavorite(Request $request)
+     public function deleteFavorite(Request $request, $id)
     {
         Favorite::where('user_id', Auth::id())
-                ->where('store_id', $request->store_id)
-                ->delete();
+            ->where('store_id', $id)
+            ->delete();
 
-        return back();
+        return back()->with('status', 'お気に入りから削除しました');
     }
 
 

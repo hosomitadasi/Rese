@@ -8,7 +8,7 @@
             <select name="area" id="area">
                 <option value=""></option>
                 @foreach($areas as $area)
-                <option value="{{ $area->id }}">{{ $area->name }}</option>
+                <option value="{{ $area->id }}">{{ $area->area }}</option>
                 @endforeach
             </select>
         </div>
@@ -17,7 +17,7 @@
             <select name="genre" id="genre">
                 <option value=""></option>
                 @foreach($genres as $genre)
-                <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                <option value="{{ $genre->id }}">{{ $genre->genre }}</option>
                 @endforeach
             </select>
             <div class="search-field">
@@ -34,8 +34,8 @@
         <div class="shop-item">
             <img src="{{ $store->photo }}" alt="{{ $store->name }}">
             <h3>{{ $store->name }}</h3>
-            <p>#<span>{{ $store->area->name }}</span></p>
-            <p>#<span>{{ $store->genre->name }}</span></p>
+            <p>#<span>{{ $store->area->area }}</span></p>
+            <p>#<span>{{ $store->genre->genre }}</span></p>
             <button onclick="window.location.href='/detail/{{ $store->id }}'">詳しく見る</button>
             <span class="favorite {{ $store->isFavorite ? 'active' : '' }}" onclick="toggleFavorite({{ $store->id }})">&#x2661;</span>
         </div>

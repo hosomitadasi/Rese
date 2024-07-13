@@ -19,13 +19,12 @@ class MypageController extends Controller
         return view('mypage', compact('user', 'reservations', 'favorites'));
     }
 
-    public function deleteByStore(Request $request)
+    public function cancelReservation(Request $request ,$id)
     {
-
-        Reservation::where('id', $request->reservation_id)
-                    ->where('user_id', Auth::id())
-                    ->delete();
-
-        return back();
+        $reservation = Reservation::find($id);
+        if ($reservation && $reservation->user_id == Auth::id()) {
+            $reservation->delete();
+        }
+        return redirect()->route('mypage')->with('status', '予約をキャンセルしました。');
     }
 }
