@@ -1,4 +1,5 @@
 body {
+    font-family: Arial, sans-serif;
     background-color: #f5f5f5;
 }
 
@@ -6,7 +7,7 @@ body {
     width: 100%;
     padding: 20px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none;
@@ -32,11 +33,80 @@ body {
     margin: 0;
 }
 
- .header-logo {
+/*レスポンシブデザイン*/
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .shop-detail img {
+        width: 100%;
+    }
+
+    .reservation-form {
+        margin-top: 20px;
+    }
+
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-field {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .shop-list {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .shop-item {
+        margin-bottom: 20px;
+    }
+
+    .done-message,
+    .register-form,
+    .login-form,
+    .thanks-box {
+        padding: 10px;
+    }
+
+    .menu-container ul {
+        padding: 0;
+    }
+
+    .menu-container ul li {
+        margin: 10px 0;
+    }
+
+    .mypage .content-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .reservation-card,
+    .favorite-card {
+        width: 100%;
+    }
+}
+
+.header-logo {
     color: #007bff;
     display: flex;
     align-items: center;
- }
+}
 
 li {
     list-style: none;
@@ -277,9 +347,27 @@ li {
 }
 
 /*mypage.blade.php start*/
+.mypage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
 .reservations,
 .favorites {
-    margin-top: 20px;
+    width: 45%;
+}
+
+.favorite-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .reservation-card,
@@ -294,12 +382,13 @@ li {
     align-items: center;
 }
 
-.reservation-info {
-    color: #ffffff;
+.reservation-info p,
+.favorite-card p {
+    margin: 10px 0;
 }
 
 .cancel-button {
-    background-color: #ff0000;
+    background-color: #3b82f6;
     color: #ffffff;
     border: none;
     padding: 5px 10px;
@@ -316,10 +405,6 @@ li {
     width: 100%;
     height: auto;
     border-radius: 8px;
-}
-
-.favorite-card p {
-    margin: 10px 0;
 }
 
 .favorite-card button {

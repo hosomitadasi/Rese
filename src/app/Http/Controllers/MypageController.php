@@ -14,7 +14,7 @@ class MypageController extends Controller
     {
         $user = Auth::user();
         $reservations = Reservation::where('user_id', Auth::id())->get();
-        $favorites = Favorite::where('user_id', Auth::id())->get();
+        $favorites = Favorite::where('user_id', Auth::id())->with('store.area', 'store.genre')->get();
 
         return view('mypage', compact('user', 'reservations', 'favorites'));
     }
@@ -26,5 +26,10 @@ class MypageController extends Controller
             $reservation->delete();
         }
         return redirect()->route('mypage')->with('status', '予約をキャンセルしました。');
+    }
+
+    public function changeReservation(Request $request , $id)
+    {
+        $reservation = Reservation::find($id);
     }
 }

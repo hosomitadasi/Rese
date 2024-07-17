@@ -18,6 +18,10 @@ class ShopController extends Controller
         $stores = Store::with('area', 'genre')->get();
         $areas = Area::all();
         $genres = Genre::all();
+        $user = Auth::user();
+        foreach ($stores as $store) {
+            $store->isFavorite = $user ? $user->favorites->contains('store_id', $store->id) : false;
+        }
         return view('home', compact('stores', 'areas', 'genres'));
     }
 
@@ -47,16 +51,18 @@ class ShopController extends Controller
 
     public function addReservation(ReservationRequest $request)
     {
-
-        Reservation::create([
-            'user_id' => Auth::id(),
-            'store_id' => $request->shop_id,
-            'reservation_date' => $request->reservation_date,
-            'reservation_time' => $request->reservation_time,
-            'num_people' => $request->num_people,
-        ]);
-
-        return redirect()->route('done');
+        try {
+            Reservation::create([
+                'user_id' => Auth::id(),
+                'store_id' => $request->shop_id,
+                'reservation_date' => $request->reservation_date,
+                'reservation_time' => $request->reservation_time,
+                'num_people' => $request->num_people,
+            ]);
+            return redirect('done');
+        } catch (\Throwable $th) {
+            return redirect('detail')->with('result', 'エラーが発生しました');
+        }
     }
 
     public function addFavorite(Request $request, $id)

@@ -41,4 +41,28 @@
         </div>
         @endforeach
     </div>
+
+    <script>
+        function toggleFavorite(storeId) {
+            let formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('_method', 'POST');
+
+            fetch(`/favorite/${storeId}`, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            }).then(data => {
+                location.reload();
+            }).catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    </script>
     @endsection
