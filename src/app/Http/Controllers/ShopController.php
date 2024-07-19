@@ -10,6 +10,7 @@ use App\Models\Reservation;
 use App\Models\Area;
 use App\Models\Genre;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Builder\FallbackBuilder;
 
 class ShopController extends Controller
 {
@@ -23,6 +24,15 @@ class ShopController extends Controller
             $store->isFavorite = $user ? $user->favorites->contains('store_id', $store->id) : false;
         }
         return view('home', compact('stores', 'areas', 'genres'));
+
+        $favorite = Favorite::addFavorite;
+
+        if ($favorite) {
+            return view('home')->with([
+                "is_favorite_true" => true,
+                "is_favorite_false" => false,
+            ]);
+        }
     }
 
     public function search(Request $request)

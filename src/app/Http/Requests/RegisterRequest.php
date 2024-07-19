@@ -29,4 +29,13 @@ class RegisterRequest extends FormRequest
             'password' => 'required|string|min:8|max:191',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => '名前は必須項目です。',
+            'email.required' => 'メールアドレスは必須項目です。',
+            'password.required' => 'パスワードは必須項目です。',
+        ];
+    }
 }
