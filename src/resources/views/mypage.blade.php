@@ -28,10 +28,10 @@
         </div>
         <div class="favorites">
             <h3>お気に入り店舗</h3>
-            <div class="favorite-grid">
+            <div class="favorite-list">
                 @foreach($favorites as $favorite)
                 @if ($favorite->store)
-                <div class="favorite-card">
+                <div class="favorite-item">
                     <img src="{{ $favorite->store->photo }}" alt="{{ $favorite->store->name }}">
                     <p>{{ $favorite->store->name }}</p>
                     <p>#{{ $favorite->store->area->area }} #{{ $favorite->store->genre->genre }}</p>
@@ -42,6 +42,7 @@
                 @endforeach
             </div>
         </div>
+
     </div>
 </div>
 

@@ -393,6 +393,10 @@ li {
     align-items: center;
 }
 
+.favorite-card img {
+    size: 100px;
+}
+
 .reservation-info p,
 .favorite-card p {
     margin: 10px 0;
@@ -412,34 +416,48 @@ li {
     background-color: #cc0000;
 }
 
-.favorite-card img {
-    width: 100%;
+.favorite-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.favorite-item {
+    width: 23%;
+    margin: 15px 0;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.favorite-item img {
+    max-width: 100%;
     height: auto;
-    border-radius: 8px;
 }
 
-.favorite-card button {
-    background-color: #3b82f6;
-    color: #ffffff;
+.favorite-item h3 {
+    margin: 10px 0;
+}
+
+.favorite-item p {
+    margin: 5px 0;
+}
+
+.favorite-item button {
+    background-color: #007bff;
+    color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.favorite-card button:hover {
-    background-color: #2563eb;
-}
-
-.favorite-card .favorite {
-    color: red;
-    font-size: 24px;
+    padding: 5px 10px;
     cursor: pointer;
 }
 
-.favorite-card .favorite.active {
+.shop-item .favorite {
+    cursor: pointer;
+}
+
+.shop-item .favorite.active {
     color: red;
 }
 

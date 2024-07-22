@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShopController;
@@ -34,3 +35,13 @@ Route::middleware('auth')->group(function () {
 
 Route::get('menu2', [AuthController::class, 'indexMenu2'])->name('menu2');
 
+Route::middleware(['role:admin'])->group(function() {
+    Route::get('/admin', [AdminController::class, 'indexAdmin'])->name('admin');
+    Route::post('/admin/owner', [AdminController::class, 'createStoreOwner'])->name('admin.createStoreOwner');
+});
+
+Route::middleware(['role:store_owner'])->group(function () {
+    Route::get('/owner', [StoreController::class, 'indexOwner'])->name('owner');
+    Route::resource('stores', StoreController::class);
+    Route::get('stores/{store}/reservations', [StoreController::class, 'reservations'])->name('stores.reservations');
+});
