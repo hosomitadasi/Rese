@@ -25,7 +25,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'shop_id' => 'required|exists:stores,id',
-            'reservation_date' => 'required|date',
+            'reservation_date' => 'required|date|after:today',
             'reservation_time' => 'required|date_format:H:i',
             'num_people' => 'required|integer|min:1',
         ];

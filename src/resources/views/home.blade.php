@@ -37,32 +37,15 @@
             <p>#<span>{{ $store->area->area }}</span></p>
             <p>#<span>{{ $store->genre->genre }}</span></p>
             <button onclick="window.location.href='/detail/{{ $store->id }}'">詳しく見る</button>
-            <span class="favorite {{ $store->isFavorite ? 'active' : '' }}" onclick="toggleFavorite({{ $store->id }})">&#x2661;</span>
+
+            <form method="POST" action="{{ route('favorite.toggle', $store->id) }}">
+                @csrf
+                <button type="submit" class="favorite-button">
+                    <span class="favorite {{ $store->isFavorite ? 'active' : '' }}">&hearts;</span>
+                </button>
+            </form>
         </div>
         @endforeach
     </div>
 
-    <script>
-        function toggleFavorite(storeId) {
-            let formData = new FormData();
-            formData.append('_token', '{{ csrf_token() }}');
-            formData.append('_method', 'POST');
-
-            fetch(`/favorite/${storeId}`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'same-origin'
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            }).then(data => {
-                location.reload();
-            }).catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-        }
-    </script>
     @endsection

@@ -183,13 +183,21 @@ li {
     cursor: pointer;
 }
 
-.shop-item .favorite {
+.favorite-button {
+    background: none;
+    border: none;
     cursor: pointer;
 }
 
-.shop-item .favorite.active {
-    color: red;
+.favorite {
+    font-size: 24px;
+    color: gray;
 }
+
+.favorite.active {
+    color: pink;
+}
+
 /*home.blade.php end*/
 
 .shop-detail {
@@ -446,19 +454,10 @@ li {
 }
 
 .favorite-item button {
-    background-color: #007bff;
     color: white;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-}
-
-.shop-item .favorite {
-    cursor: pointer;
-}
-
-.shop-item .favorite.active {
-    color: red;
 }
 
 /*menu.blade.php start*/

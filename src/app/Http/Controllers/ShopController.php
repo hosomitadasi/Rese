@@ -9,6 +9,7 @@ use App\Models\Favorite;
 use App\Models\Reservation;
 use App\Models\Area;
 use App\Models\Genre;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 
@@ -16,23 +17,20 @@ class ShopController extends Controller
 {
     public function indexHome()
     {
-        $stores = Store::with('area', 'genre')->get();
+        $stores = Store::with('area', 'genre')->get()->map(function($store) {
+            $store->isFavorite = $store->isFavorite();
+            return $store;
+        });
+
         $areas = Area::all();
         $genres = Genre::all();
+
         $user = Auth::user();
         foreach ($stores as $store) {
             $store->isFavorite = $user ? $user->favorites->contains('store_id', $store->id) : false;
         }
+
         return view('home', compact('stores', 'areas', 'genres'));
-
-        $favorite = Favorite::addFavorite;
-
-        if ($favorite) {
-            return view('home')->with([
-                "is_favorite_true" => true,
-                "is_favorite_false" => false,
-            ]);
-        }
     }
 
     public function search(Request $request)
@@ -61,6 +59,13 @@ class ShopController extends Controller
 
     public function addReservation(ReservationRequest $request)
     {
+        $currentDateTime = now();
+        $reservationDateTime = Carbon::parse($request->reservation_date . ' ' . $request->reservation_time);
+
+        if ($reservationDateTime->lessThanOrEqualTo($currentDateTime)) {
+            return redirect()->back()->withErrors(['reservation_time'=> '過去および当日の時間には予約できません。']);
+        }
+
         try {
             Reservation::create([
                 'user_id' => Auth::id(),
@@ -75,28 +80,25 @@ class ShopController extends Controller
         }
     }
 
-    public function addFavorite(Request $request, $id)
+    public function toggleFavorite($id)
     {
-        $favorite = Favorite::firstOrCreate([
-            'user_id' => Auth::id(),
-            'store_id' => $id,
-        ]);
+        $user_id = Auth::id();
+        $favorite = Favorite::where('user_id', $user_id)->where('store_id', $id)->first();
 
-        return back()->with('status', 'お気に入りに追加しました');
+        if ($favorite) {
+            $favorite->delete();
+            return back()->with('status', 'お気に入りから削除しました');
+        } else {
+            Favorite::create([
+                'user_id' => $user_id,
+                'store_id' => $id,
+            ]);
+            return back()->with('status', 'お気に入りに追加しました');
+        }
     }
 
-     public function deleteFavorite(Request $request, $id)
+    public function indexDone()
     {
-        Favorite::where('user_id', Auth::id())
-            ->where('store_id', $id)
-            ->delete();
-
-        return back()->with('status', 'お気に入りから削除しました');
-    }
-
-
-     public function indexDone()
-    {
-        return view('done');
+        return view('shop/done');
     }
 }

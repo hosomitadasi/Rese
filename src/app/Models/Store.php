@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Store extends Model
 {
     use HasFactory;
-     protected $fillable = [
+
+    protected $fillable = [
         'name', 'area_id', 'genre_id', 'overview', 'photo'
     ];
 
@@ -25,6 +27,11 @@ class Store extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function isFavorite()
+    {
+        return $this->favorites()->where('user_id', Auth::id())->exists();
     }
 
     public function favorites() {

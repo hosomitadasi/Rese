@@ -19,10 +19,15 @@
                     @method('DELETE')
                     <button type="submit" class="cancel-button">×</button>
                 </form>
-                <form>
+                @if (Carbon\Carbon::parse($reservation->reservation_date)->greaterThanOrEqualTo(now()->addDay()))
+                <form method="POST" action="{{ route('reserve.change', $reservation->id) }}">
                     @csrf
+                    <input type="date" name="reservation_date" value="{{ $reservation->reservation_date }}" required>
+                    <input type="time" name="reservation_time" value="{{ $reservation->reservation_time }}" required>
+                    <input type="number" name="num_people" value="{{ $reservation->num_people }}" required>
                     <button type="submit" class="change-button">変更する</button>
                 </form>
+                @endif
             </div>
             @endforeach
         </div>
@@ -36,7 +41,13 @@
                     <p>{{ $favorite->store->name }}</p>
                     <p>#{{ $favorite->store->area->area }} #{{ $favorite->store->genre->genre }}</p>
                     <button onclick="window.location.href='/detail/{{ $favorite->store->id }}'">詳しく見る</button>
-                    <span class="favorite active" onclick="removeFavorite({{ $favorite->id }})">&#x2661;</span>
+
+                    <form method="POST" action="{{ route('favorite.toggle', $favorite->store->id) }}">
+                        @csrf
+                        <button type="submit" class="favorite-button">
+                            <span class="favorite active">&hearts;</span>
+                        </button>
+                    </form>
                 </div>
                 @endif
                 @endforeach
@@ -46,18 +57,4 @@
     </div>
 </div>
 
-<script>
-    function removeFavorite(id) {
-        fetch('/favorite/' + id, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        }).then(response => {
-            if (response.ok) {
-                location.reload();
-            }
-        });
-    }
-</script>
 @endsection

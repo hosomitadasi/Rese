@@ -29,7 +29,7 @@ class AuthController extends Controller
             ]);
 
             event(new Registered($user));
-            
+
             return redirect('thanks');
         } catch (\Throwable $th) {
             return redirect('register')->with('result', 'エラーが発生しました');
@@ -62,14 +62,14 @@ class AuthController extends Controller
         return redirect('home');
     }
 
-      public function indexMenu1()
+    public function indexMenu1()
     {
-        return view('menu1');
+        return view('menu/menu1');
     }
 
     public function indexMenu2()
     {
-        return view('menu2');
+        return view('menu/menu2');
     }
 
     public function showVerifyNotice()

@@ -8,7 +8,7 @@
 @endif
 <div class="login-form">
     <h2>ログイン</h2>
-    <form action="/login" method="POST">
+    <form action="{{ route('login') }}" method=" POST">
         @csrf
         <label>メールアドレス:
             <input type="email" name="email">

@@ -13,10 +13,6 @@ class Favorite extends Model
         'user_id', 'store_id'
     ];
 
-    public function addFavorite($favorite) {
-        
-    }
-
     public function user() {
         return $this->belongsTo(User::class);
     }
