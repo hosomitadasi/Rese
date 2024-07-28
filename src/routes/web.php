@@ -17,7 +17,7 @@ Route::get('views/register', [AuthController::class, 'indexRegister'])->name('au
 Route::post('views/register', [AuthController::class, 'createRegister']);
 Route::get('thanks', [AuthController::class, 'indexThanks'])->name('thanks');
 Route::get('views/login', [AuthController::class, 'indexLogin'])->name('auth.login');
-Route::post('views/login', [AuthController::class, 'postLogin']);
+Route::post('views/login', [AuthController::class, 'postLogin'])->name('auth.login.post');
 
 // 認証メールルート
 Route::get('email/verify', [AuthController::class, 'showVerifyNotice'])->name('verification.notice');

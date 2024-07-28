@@ -43,15 +43,17 @@ class AuthController extends Controller
 
     public function indexLogin()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function postLogin(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
-            return redirect('mypage');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('mypage');
         } else {
-            return redirect('login')->with('result', 'メールアドレスまたはパスワードが間違っております');
+            return redirect()->route('auth.login')->with('result', 'メールアドレスまたはパスワードが間違っております');
         }
     }
 
