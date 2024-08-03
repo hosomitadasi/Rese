@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\ReservationRequest;
 use App\Models\Store;
 use App\Models\Favorite;
-use App\Models\Reservation;
 use App\Models\Area;
 use App\Models\Genre;
 use Carbon\Carbon;
@@ -15,26 +13,25 @@ use Ramsey\Uuid\Builder\FallbackBuilder;
 
 class ShopController extends Controller
 {
+    // 店舗一覧ページ（home.blade.php）表示機能
     public function indexHome()
     {
-        $stores = Store::with('area', 'genre')->get()->map(function($store) {
-            $store->isFavorite = $store->isFavorite();
+        $user = Auth::user();
+        $stores = Store::with('area', 'genre')->get()->map(function($store) use ($user) {
+            $store->is_Favorite = $user ? $store->checkIfFavorite() : false;
             return $store;
         });
 
         $areas = Area::all();
         $genres = Genre::all();
 
-        $user = Auth::user();
-        foreach ($stores as $store) {
-            $store->isFavorite = $user ? $user->favorites->contains('store_id', $store->id) : false;
-        }
-
         return view('home', compact('stores', 'areas', 'genres'));
     }
 
+    // 飲食店検索機能
     public function search(Request $request)
     {
+        $user = Auth::user();
         $query = Store::query();
         if ($request->area) {
             $query->where('area_id', $request->area);
@@ -45,41 +42,69 @@ class ShopController extends Controller
         if ($request->name) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
-        $stores = $query->with('area', 'genre')->get();
+        $stores = $query->with('area', 'genre')->get()->map(function($store) use ($user) {
+            $store->is_Favorite = $user ? $store->checkIfFavorite() : false;
+            return $store;
+        });
+
         $areas = Area::all();
         $genres = Genre::all();
         return view('home', compact('stores', 'areas', 'genres'));
     }
 
+    // 店舗詳細ページ（detail.blade.php）表示機能
     public function indexDetail($id)
     {
         $shop = Store::findOrFail($id);
         return view('detail', compact('shop'));
     }
 
-    public function addReservation(ReservationRequest $request)
+    // レビュー作成機能
+    public function review(Request $request)
     {
-        $currentDateTime = now();
-        $reservationDateTime = Carbon::parse($request->reservation_date . ' ' . $request->reservation_time);
 
-        if ($reservationDateTime->lessThanOrEqualTo($currentDateTime)) {
-            return redirect()->back()->withErrors(['reservation_time'=> '過去および当日の時間には予約できません。']);
-        }
+        $result = false;
 
-        try {
-            Reservation::create([
-                'user_id' => Auth::id(),
-                'store_id' => $request->shop_id,
-                'reservation_date' => $request->reservation_date,
-                'reservation_time' => $request->reservation_time,
-                'num_people' => $request->num_people,
-            ]);
-            return redirect('done');
-        } catch (\Throwable $th) {
-            return redirect('detail')->with('result', 'エラーが発生しました');
-        }
+        // バリデーション
+        $request->validate([
+            'product_id' => [
+                'required',
+                'exists:products,id',
+                function ($attribute, $value, $fail) use ($request) {
+
+                    // ログインしてるかチェック
+                    if (!auth()->check()) {
+
+                        $fail('レビューするにはログインしてください。');
+                        return;
+                    }
+
+                    // すでにレビュー投稿してるかチェック
+                    $exists = \App\ProductReview::where('user_id', $request->user()->id)
+                        ->where('product_id', $request->product_id)
+                        ->exists();
+
+                    if ($exists) {
+
+                        $fail('すでにレビューは投稿済みです。');
+                        return;
+                    }
+                }
+            ],
+            'stars' => 'required|integer|min:1|max:5',
+            'comment' => 'required'
+        ]);
+
+        $review = new \App\ProductReview();
+        $review->product_id = $request->product_id;
+        $review->user_id = $request->user()->id;
+        $review->stars = $request->stars;
+        $review->comment = $request->comment;
+        $result = $review->save();
+        return ['result' => $result];
     }
 
+    // お気に入り追加、削除機能
     public function toggleFavorite($id)
     {
         $user_id = Auth::id();
@@ -97,8 +122,10 @@ class ShopController extends Controller
         }
     }
 
+    // 予約完了ページ（done.blade.php）表示機能
     public function indexDone()
     {
         return view('shop/done');
     }
+
 }

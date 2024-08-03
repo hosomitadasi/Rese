@@ -29,7 +29,7 @@ class Store extends Model
         return $this->hasMany(Reservation::class);
     }
 
-    public function isFavorite()
+    public function checkIfFavorite()
     {
         return $this->favorites()->where('user_id', Auth::id())->exists();
     }

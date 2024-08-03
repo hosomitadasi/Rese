@@ -45,12 +45,12 @@ class FortifyServiceProvider extends ServiceProvider
 
         // ログインビューの設定
         Fortify::loginView(function () {
-            return view('auth.login'); // 'auth.login' はあなたのログインビューの名前に置き換えてください
+            return view('login'); // 'auth.login' はあなたのログインビューの名前に置き換えてください
         });
 
         // 登録ビューの設定
         Fortify::registerView(function () {
-            return view('auth.register'); // 'auth.register' はあなたの登録ビューの名前に置き換えてください
+            return view('register'); // 'auth.register' はあなたの登録ビューの名前に置き換えてください
         });
 
         // パスワードリセットビューの設定

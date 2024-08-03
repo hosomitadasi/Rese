@@ -41,7 +41,7 @@
             <form method="POST" action="{{ route('favorite.toggle', $store->id) }}">
                 @csrf
                 <button type="submit" class="favorite-button">
-                    <span class="favorite {{ $store->isFavorite ? 'active' : '' }}">&hearts;</span>
+                    <span class="favorite {{ $store->is_Favorite ? 'active' : '' }}">&hearts;</span>
                 </button>
             </form>
         </div>
