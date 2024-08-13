@@ -53,6 +53,11 @@ class FortifyServiceProvider extends ServiceProvider
             return view('register'); // 'auth.register' はあなたの登録ビューの名前に置き換えてください
         });
 
+        // メール認証用ビューの設定
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
+
         // パスワードリセットビューの設定
         Fortify::requestPasswordResetLinkView(function () {
             return view('auth.forgot-password'); // 'auth.forgot-password' はあなたのパスワードリセットリンクリクエストビューの名前に置き換えてください

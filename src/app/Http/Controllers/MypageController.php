@@ -11,6 +11,7 @@ use App\Models\Area;
 use App\Models\Genre;
 use App\Models\Favorite;
 use App\Models\Reservation;
+use Carbon\Carbon;
 
 class MypageController extends Controller
 {
@@ -42,7 +43,7 @@ class MypageController extends Controller
                 'reservation_time' => $request->reservation_time,
                 'num_people' => $request->num_people,
             ]);
-            return redirect('done');
+            return redirect()->route('done', ['shop' => $request->shop_id]);
         } catch (\Throwable $th) {
             return redirect('detail')->with('result', 'エラーが発生しました');
         }

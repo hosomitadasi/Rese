@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
+
     public function indexOwner()
     {
         return view('store_owner.index');
@@ -23,20 +24,27 @@ class StoreController extends Controller
         return view('stores.create');
     }
 
+    // 店舗情報作成処理
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'area_id' => 'required|integer',
+            'genre_id' => 'required|integer',
+            'overview' => 'required|string',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time() . '.' . $request->photo->extension();
-        $request->photo->move(public_path('images'), $imageName);
+        // 画像をストレージに保存
+        $path = $request->file('photo')->store('public/photos');
 
+        // データベースに保存
         Store::create([
-            'name' => $validated['name'],
-            'photo' => $imageName,
-            'owner_id' => auth()->id(),
+            'name' => $request->input('name'),
+            'area_id' => $request->input('area_id'),
+            'genre_id' => $request->input('genre_id'),
+            'overview' => $request->input('overview'),
+            'photo' => basename($path), // 画像のファイル名のみを保存
         ]);
 
         return redirect()->route('stores.index')->with('success', '店舗情報を作成しました');

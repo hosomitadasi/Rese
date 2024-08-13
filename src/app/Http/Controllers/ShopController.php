@@ -7,6 +7,7 @@ use App\Models\Store;
 use App\Models\Favorite;
 use App\Models\Area;
 use App\Models\Genre;
+use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Builder\FallbackBuilder;
@@ -63,45 +64,20 @@ class ShopController extends Controller
     public function review(Request $request)
     {
 
-        $result = false;
-
-        // バリデーション
         $request->validate([
-            'product_id' => [
-                'required',
-                'exists:products,id',
-                function ($attribute, $value, $fail) use ($request) {
-
-                    // ログインしてるかチェック
-                    if (!auth()->check()) {
-
-                        $fail('レビューするにはログインしてください。');
-                        return;
-                    }
-
-                    // すでにレビュー投稿してるかチェック
-                    $exists = \App\ProductReview::where('user_id', $request->user()->id)
-                        ->where('product_id', $request->product_id)
-                        ->exists();
-
-                    if ($exists) {
-
-                        $fail('すでにレビューは投稿済みです。');
-                        return;
-                    }
-                }
-            ],
-            'stars' => 'required|integer|min:1|max:5',
-            'comment' => 'required'
+            'shop_id' => 'required|exists:stores,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string',
         ]);
 
-        $review = new \App\ProductReview();
-        $review->product_id = $request->product_id;
-        $review->user_id = $request->user()->id;
-        $review->stars = $request->stars;
+        $review = new Review();
+        $review->store_id = $request->shop_id;
+        $review->user_id = Auth::id();
+        $review->stars = $request->rating;
         $review->comment = $request->comment;
-        $result = $review->save();
-        return ['result' => $result];
+        $review->save();
+
+        return redirect()->back()->with('message', 'レビューが投稿されました');
     }
 
     // お気に入り追加、削除機能
@@ -123,9 +99,10 @@ class ShopController extends Controller
     }
 
     // 予約完了ページ（done.blade.php）表示機能
-    public function indexDone()
+    public function indexDone($shopID)
     {
-        return view('shop/done');
+        $shop = Store::findOrFail($shopID);
+        return view('done', compact('shop'));
     }
 
 }
