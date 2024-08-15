@@ -7,6 +7,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MypageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // 飲食店ルート
 Route::get('/', [ShopController::class, 'indexHome'])->name('home');
@@ -14,11 +15,11 @@ Route::get('search', [ShopController::class, 'search'])->name('search');
 Route::get('/detail/{id}', [ShopController::class, 'indexDetail'])->name('detail');
 
 // 認証ルート
-Route::get('/register', [AuthController::class, 'indexRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'createRegister']);
-Route::get('/thanks', [AuthController::class, 'indexThanks'])->name('thanks');
-Route::get('/login', [AuthController::class, 'indexLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'postLogin']);
+Route::get('register', [AuthController::class, 'indexRegister'])->name('register');
+Route::post('register', [AuthController::class, 'createRegister']);
+Route::get('auth/thanks', [AuthController::class, 'indexThanks'])->name('thanks');
+Route::get('login', [AuthController::class, 'indexLogin'])->name('login');
+Route::post('login', [AuthController::class, 'postLogin']);
 
 // メール確認用ルート
 Route::get('/email/verify', function () {

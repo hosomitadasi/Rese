@@ -22,7 +22,7 @@ class MypageController extends Controller
         $reservations = Reservation::where('user_id', Auth::id())->where('reservation_date', '>=', now()->format('Y-m-d'))->get();
         $favorites = Favorite::where('user_id', Auth::id())->with('store.area', 'store.genre')->get();
 
-        return view('mypage', compact('user', 'reservations', 'favorites'));
+        return view('stores.mypage', compact('user', 'reservations', 'favorites'));
     }
 
     // 予約作成機能
@@ -43,9 +43,9 @@ class MypageController extends Controller
                 'reservation_time' => $request->reservation_time,
                 'num_people' => $request->num_people,
             ]);
-            return redirect()->route('done', ['shop' => $request->shop_id]);
+            return redirect()->route('stores.done', ['shop' => $request->shop_id]);
         } catch (\Throwable $th) {
-            return redirect('detail')->with('result', 'エラーが発生しました');
+            return redirect('stores.detail')->with('result', 'エラーが発生しました');
         }
     }
 
@@ -56,7 +56,7 @@ class MypageController extends Controller
         if ($reservation && $reservation->user_id == Auth::id()) {
             $reservation->delete();
         }
-        return redirect()->route('mypage')->with('status', '予約をキャンセルしました。');
+        return redirect()->route('stores.mypage')->with('status', '予約をキャンセルしました。');
     }
 
     // 予約変更機能
@@ -70,6 +70,6 @@ class MypageController extends Controller
             $reservation->num_people = $request->input('num_people');
             $reservation->save();
         }
-        return redirect()->route('mypage')->with('status', '予約を変更しました。');
+        return redirect()->route('stores.mypage')->with('status', '予約を変更しました。');
     }
 }

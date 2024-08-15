@@ -26,7 +26,7 @@ class ShopController extends Controller
         $areas = Area::all();
         $genres = Genre::all();
 
-        return view('home', compact('stores', 'areas', 'genres'));
+        return view('stores.home', compact('stores', 'areas', 'genres'));
     }
 
     // 飲食店検索機能
@@ -50,14 +50,14 @@ class ShopController extends Controller
 
         $areas = Area::all();
         $genres = Genre::all();
-        return view('home', compact('stores', 'areas', 'genres'));
+        return view('stores.home', compact('stores', 'areas', 'genres'));
     }
 
     // 店舗詳細ページ（detail.blade.php）表示機能
     public function indexDetail($id)
     {
         $shop = Store::findOrFail($id);
-        return view('detail', compact('shop'));
+        return view('stores.detail', compact('shop'));
     }
 
     // レビュー作成機能
@@ -102,7 +102,7 @@ class ShopController extends Controller
     public function indexDone($shopID)
     {
         $shop = Store::findOrFail($shopID);
-        return view('done', compact('shop'));
+        return view('stores.done', compact('shop'));
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationReminder;
 use App\Models\Reservation;
 use Carbon\Carbon;
 

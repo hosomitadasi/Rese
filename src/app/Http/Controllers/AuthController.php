@@ -18,7 +18,7 @@ class AuthController extends Controller
     // 会員登録ページ（register.blade.php）表示機能
     public function indexRegister()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     // 会員登録機能
@@ -35,20 +35,20 @@ class AuthController extends Controller
 
             return redirect('thanks');
         } catch (\Throwable $th) {
-            return redirect('register')->with('result', 'エラーが発生しました');
+            return redirect('auth.register')->with('result', 'エラーが発生しました');
         }
     }
 
     // 登録完了ページ（thanks.blade.php）表示機能
     public function indexThanks()
     {
-        return view('thanks');
+        return view('auth.thanks');
     }
 
     // ログインページ（login.blade.php）表示機能
     public function indexLogin()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     // ログイン処理機能
@@ -72,13 +72,13 @@ class AuthController extends Controller
     // メニュー１ページ（menu1.blade.php）表示機能
     public function indexMenu1()
     {
-        return view('menu/menu1');
+        return view('menu.menu1');
     }
 
      // メニュー２ページ（menu2.blade.php）表示機能
     public function indexMenu2()
     {
-        return view('menu/menu2');
+        return view('menu.menu2');
     }
 
     // パスワードリセットリンク送信機能
