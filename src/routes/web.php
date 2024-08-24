@@ -9,16 +9,23 @@ use App\Http\Controllers\MypageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-// 飲食店ルート
+// 飲食店一覧表示ルート
 Route::get('/', [ShopController::class, 'indexHome'])->name('home');
+
+// 検索機能処理ルート
 Route::get('search', [ShopController::class, 'search'])->name('search');
+
+// 飲食店詳細ページ表示ルート
 Route::get('/detail/{id}', [ShopController::class, 'indexDetail'])->name('detail');
 
 // 認証ルート
 Route::get('register', [AuthController::class, 'indexRegister'])->name('register');
 Route::post('register', [AuthController::class, 'createRegister']);
-Route::get('auth/thanks', [AuthController::class, 'indexThanks'])->name('thanks');
+
+Route::get('thanks', [AuthController::class, 'indexThanks'])->name('thanks');
+
 Route::get('login', [AuthController::class, 'indexLogin'])->name('login');
+
 Route::post('login', [AuthController::class, 'postLogin']);
 
 // メール確認用ルート
@@ -32,7 +39,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/thanks');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/resend', function (Request $request) {
+Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
 
     return back()->with('message', 'Verification link sent!');
@@ -40,20 +47,38 @@ Route::post('/email/resend', function (Request $request) {
 
 // ログイン後処理ルート
 Route::middleware('auth')->group(function () {
+    // マイページ表示処理ルート
     Route::get('/mypage', [MypageController::class, 'indexMypage'])->name('mypage');
+
+    // ログアウト処理ルート
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // 予約処理ルート
     Route::post('reserve', [MypageController::class, 'addReservation'])->name('reserve');
+
+    // 予約削除処理ルート
     Route::delete('mypage/cancel/{id}', [MypageController::class, 'cancelReservation'])->name('reserve.cancel');
+
+    // 予約変更処理ルート
     Route::post('mypage/change/{id}', [MypageController::class, 'changeReservation'])->name('reserve.change');
 
+    // お気に入り処理ルート
     Route::post('favorite/toggle/{id}', [ShopController::class, 'toggleFavorite'])->name('favorite.toggle');
 
+    // 予約完了ページ表示処理ルート
     Route::get('done/{shop}', [ShopController::class, 'indexDone'])->name('done');
 
     Route::get('menu/menu1', [AuthController::class, 'indexMenu1'])->name('menu1');
 
+    // レビュー作成処理ルート
     Route::post('/reviews', [ShopController::class, 'review'])->name('reviews.store');
+
+    // QRコード作成処理ルート
+    Route::get('QrCode/{reservationID}', [MypageController::class, 'generateQrCode'])->name('generate.qr');
+
+    // 決済機能処理ルート
+    Route::get('payment', [MypageController::class, 'createPayment'])->name('payment');
+    Route::post('/store', [MypageController::class, 'storePayment'])->name('store');
 });
 
 Route::get('menu/menu2', [AuthController::class, 'indexMenu2'])->name('menu2');

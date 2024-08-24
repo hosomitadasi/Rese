@@ -175,7 +175,7 @@ li {
     margin: 5px 0;
 }
 
-.shop-item button {
+.detail-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -184,8 +184,8 @@ li {
 }
 
 .favorite-button {
-    background: none;
     border: none;
+    padding: 5px 10px;
     cursor: pointer;
 }
 
@@ -538,4 +538,24 @@ li {
     padding-bottom: 20px;
     border: none;
 }
-/**/
+
+/*payment.blade.php*/
+.form-control {
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+#card-errors {
+    margin-top: 10px;
+    color: red;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+}

@@ -36,7 +36,7 @@
             <h3>{{ $store->name }}</h3>
             <p>#<span>{{ $store->area->area }}</span></p>
             <p>#<span>{{ $store->genre->genre }}</span></p>
-            <button onclick="window.location.href='/detail/{{ $store->id }}'">詳しく見る</button>
+            <button onclick="window.location.href='/detail/{{ $store->id }}'" class="detail-button">詳しく見る</button>
 
             <form method="POST" action="{{ route('favorite.toggle', $store->id) }}">
                 @csrf

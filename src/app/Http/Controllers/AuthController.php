@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect('home');
+        return redirect('/');
     }
 
     // メニュー１ページ（menu1.blade.php）表示機能

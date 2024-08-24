@@ -9,23 +9,20 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
+
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);
@@ -45,12 +42,12 @@ class FortifyServiceProvider extends ServiceProvider
 
         // ログインビューの設定
         Fortify::loginView(function () {
-            return view('login'); // 'auth.login' はあなたのログインビューの名前に置き換えてください
+            return view('auth.login');
         });
 
         // 登録ビューの設定
         Fortify::registerView(function () {
-            return view('register'); // 'auth.register' はあなたの登録ビューの名前に置き換えてください
+            return view('auth.register');
         });
 
         // メール認証用ビューの設定
@@ -58,19 +55,20 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.verify-email');
         });
 
+        // メール認証完了後のリダイレクト設定
+        Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+            $request->fulfill();
+
+            return redirect('/thanks'); // リダイレクト先をカスタマイズ
+        })->middleware(['auth', 'signed'])->name('verification.verify');
+
         // パスワードリセットビューの設定
         Fortify::requestPasswordResetLinkView(function () {
-            return view('auth.forgot-password'); // 'auth.forgot-password' はあなたのパスワードリセットリンクリクエストビューの名前に置き換えてください
+            return view('auth.forgot-password');
         });
 
         Fortify::resetPasswordView(function ($request) {
-            return view('auth.reset-password', ['request' => $request]); // 'auth.reset-password' はあなたのパスワードリセットビューの名前に置き換えてください
+            return view('auth.reset-password', ['request' => $request]);
         });
-
-        // 二要素認証ビューの設定
-        Fortify::twoFactorChallengeView(function () {
-            return view('auth.two-factor-challenge'); // 'auth.two-factor-challenge' はあなたの二要素認証ビューの名前に置き換えてください
-        });
-
     }
 }
