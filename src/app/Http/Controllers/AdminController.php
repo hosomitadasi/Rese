@@ -2,32 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Area;
+use App\Models\Genre;
+use App\Models\Store;
 
 class AdminController extends Controller
 {
-    public function indexAdmin()
+    public function indexManager()
     {
-        return view('admin.index');
+        return view('admin.manager');
     }
 
-    public function createStoreOwner(Request $request)
+    public function addOwner()
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        return view('admin.addOwner');
+    }
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+    public function editOwner()
+    {
+        return view('admin.editOwner');
+    }
 
-        $user->assignRole('store_owner');
+    public function indexOwner()
+    {
+        return view('admin.owner');
+    }
 
-        return redirect()->route('admin.index')->with('success', '店舗代表者を作成しました');
+    public function indexMenu3()
+    {
+        return view('menu.menu3');
     }
 }
