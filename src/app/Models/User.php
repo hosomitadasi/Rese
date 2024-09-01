@@ -12,8 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use Notifiable;
-    use HasRoles;
+    use Notifiable, HasRoles;
 
     protected $fillable = [
         'name',

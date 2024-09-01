@@ -14,9 +14,39 @@
         <h1 class="logo-text">Rese</h1>
     </div>
 
+    @if(request()->is('/'))
+    <div class="search-container">
+        <form action="{{ route('search') }}" method="GET">
+            <div class="search-field">
+                <label for="area">All area</label>
+                <select name="area" id="area">
+                    <option value=""></option>
+                    @foreach($areas ?? '' as $area)
+                    <option value="{{ $area->id }}">{{ $area->area }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="search-field">
+                <label for="genre">All genre</label>
+                <select name="genre" id="genre">
+                    <option value=""></option>
+                    @foreach($genres as $genre)
+                    <option value="{{ $genre->id }}">{{ $genre->genre }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="search-field">
+                <input type="text" name="name" id="name" placeholder="Search…">
+            </div>
+        </form>
+    </div>
+    @endif
+
     <script>
         document.getElementById('menu-icon').addEventListener('click', function() {
-            window.location.href = "{{ auth()->check() ? route('menu1') : route('menu2') }}";
+            window.location.href = "{{ auth()->check() ? route('home_menu') : route('auth_menu') }}";
         });
     </script>
 </header>

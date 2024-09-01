@@ -1,12 +1,13 @@
-@extends('layouts.app')
+@component('mail::message')
+# メールアドレスの確認
 
-@section('content')
-<div class="thanks-box">
-    <div class="thanks-message">
-        <p>会員登録ありがとうございました。</p>
-        <p>メールの確認が完了しましたら、「ログインする」ボタンを押してログインしてください。</p>
-        <button class="thanks-button" onclick="window.location.href='/thanks'">ログインする</button>
-    </div>
-</div>
+以下のボタンをクリックして、メールアドレスの確認を完了してください。
 
-@endsection
+@component('mail::button', ['url' => $url])
+メールアドレスを確認する
+@endcomponent
+
+ありがとうございます！
+
+{{ config('app.name') }}
+@endcomponent

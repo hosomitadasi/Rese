@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
     // 予約完了ページ表示処理ルート
     Route::get('done/{shop}', [StoreController::class, 'indexDone'])->name('done');
 
-    Route::get('menu/menu1', [AuthController::class, 'indexMenu1'])->name('menu1');
+    Route::get('menu/home_menu', [AuthController::class, 'indexHomeMenu'])->name('home_menu');
 
     // レビュー作成処理ルート
     Route::post('/reviews', [StoreController::class, 'review'])->name('reviews.store');
@@ -79,7 +79,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/store', [StoreController::class, 'storePayment'])->name('store');
 });
 
-Route::get('menu/menu2', [AuthController::class, 'indexMenu2'])->name('menu2');
+
+Route::get('menu/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
 
 // 管理人用ルート
 

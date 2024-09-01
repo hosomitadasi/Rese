@@ -12,7 +12,7 @@ header {
 
 .header-container {
     width: 100%;
-    padding: 20px;
+    padding:10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -42,6 +42,37 @@ header,
     font-size: 24px;
     color: #3b82f6;
     margin: 0;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    justify-content: flex-end;
+    border-radius: 8px;
+    margin-left: auto;
+    margin: 20px;
+}
+
+.search-field {
+    margin-left: 10px;
+}
+
+.search-field::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: url(./icon.png) no-repeat center center / auto 100%;
+    display: inline-block;
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
+
+.search-field input {
+    padding: 3px 0 3px 2em;
 }
 
 /*レスポンシブデザイン*/
@@ -136,16 +167,6 @@ li {
 }
 
 /*home.blade.php*/
-.search-container {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-}
-
-.search-field {
-    margin-left: 10px;
-}
-
 .shop-list {
     display: flex;
     flex-wrap: wrap;

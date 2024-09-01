@@ -12,22 +12,24 @@ class AdminController extends Controller
 {
     public function indexManager()
     {
-        return view('admin.manager');
+        return view('admin.index');
     }
 
     public function addOwner()
     {
-        return view('admin.addOwner');
+        return view('admin.create');
     }
 
-    public function editOwner()
+    public function editOwner($id)
     {
-        return view('admin.editOwner');
+        $owner = User::find($id);
+        return view('admin.edit', compact('owner'));
     }
 
     public function indexOwner()
     {
-        return view('admin.owner');
+        $owners = User::role('owner')->get();
+        return view('admin.index', compact('owners'));
     }
 
     public function indexMenu3()

@@ -33,9 +33,11 @@ class AuthController extends Controller
 
             event(new Registered($user));
 
-            return redirect('thanks');
+            Auth::login($user);
+
+            return redirect()->route('verification.notice');
         } catch (\Throwable $th) {
-            return redirect('auth.register')->with('result', 'エラーが発生しました');
+            return redirect('register')->with('result', 'エラーが発生しました');
         }
     }
 
@@ -69,30 +71,16 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    // メニュー１ページ（menu1.blade.php）表示機能
-    public function indexMenu1()
+    // ログイン後メニューページ（home_menu1.blade.php）表示機能
+    public function indexHomeMenu()
     {
-        return view('menu.menu1');
+        return view('menu.home_menu');
     }
 
-     // メニュー２ページ（menu2.blade.php）表示機能
-    public function indexMenu2()
+     // ログイン前メニューページ（auth_menu.blade.php）表示機能
+    public function indexAuthMenu()
     {
-        return view('menu.menu2');
-    }
-
-    // パスワードリセットリンク送信機能
-    public function sendResetLinkEmail(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-        ? back()->with(['status' => __($status)])
-        : back()->withErrors(['email' => __($status)]);
+        return view('menu.auth_menu');
     }
 
 }
