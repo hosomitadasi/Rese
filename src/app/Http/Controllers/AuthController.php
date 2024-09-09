@@ -25,18 +25,22 @@ class AuthController extends Controller
     public function  createRegister(RegisterRequest $request)
     {
         try {
-            $user = User::create([
+            $user = new User([
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
+                'role' => 3,
             ]);
 
             event(new Registered($user));
+
+            $user->save();
 
             Auth::login($user);
 
             return redirect()->route('verification.notice');
         } catch (\Throwable $th) {
+            \Log::error($th);
             return redirect('register')->with('result', 'エラーが発生しました');
         }
     }
@@ -57,9 +61,18 @@ class AuthController extends Controller
     public function postLogin(LoginRequest $request)
     {
         if (Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
-            return redirect('/mypage');
+            $user = Auth::user();
+
+            // ユーザーの役割に応じてリダイレクト先を変更
+            if ($user->role == 1) {
+                return redirect()->route('admin.index'); // 管理者用ページへ
+            } elseif ($user->role == 2) {
+                return redirect()->route('owner.index'); // 店舗代表者ページへ
+            } else {
+                return redirect('/mypage'); // 利用者ページへ
+            }
         } else {
-            return redirect('login')->with('result', 'メールアドレスまたはパスワードが間違っております');
+            return redirect('login')->with('result', 'メールアドレスまたはパスワードが間違ってます。');
         }
     }
 
@@ -67,7 +80,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-
+        session()->flush();
         return redirect('/');
     }
 

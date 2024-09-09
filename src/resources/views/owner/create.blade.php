@@ -3,7 +3,7 @@
 @section('content')
 <div class="create-form">
     <h2>店舗新規作成</h2>
-    <form action="" method="">
+    <form>
         @csrf
         <label>店舗名:
             <input type="text" name="name">
@@ -35,7 +35,7 @@
             <p>{{ $message }}</p>
             @enderror
         </label>
-        <button type="submit">保存する</button>
+        <button type="submit">登録する</button>
     </form>
 </div>
 @endsection

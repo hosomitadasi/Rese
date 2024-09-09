@@ -3,37 +3,89 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Area;
-use App\Models\Genre;
-use App\Models\Store;
 
 class AdminController extends Controller
 {
-    public function indexManager()
+    // 管理人ホームページ表示
+    public function indexAdmin()
     {
         return view('admin.index');
     }
 
-    public function addOwner()
+    // 店舗代表者作成ページ表示
+    public function indexCreate()
     {
         return view('admin.create');
     }
 
-    public function editOwner($id)
+    // 店舗代表者作成
+    public function createOwner(Request $request)
     {
-        $owner = User::find($id);
-        return view('admin.edit', compact('owner'));
+        try {
+            $user = new User([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'role' =>2,
+            ]);
+            $user->save();
+            return redirect()->route('admin.index');
+        } catch (\Throwable $e) {
+            \Log::error($e);
+            return redirect('admin.create')->with('result', 'エラーが発生しました');
+        }
     }
 
-    public function indexOwner()
+    // 店舗代表者管理ページ表示
+    public function indexShopkeeper()
     {
-        $owners = User::role('owner')->get();
-        return view('admin.index', compact('owners'));
+        $user = Auth::user();
+        return view('admin.shopkeeper', compact('user'));
     }
 
-    public function indexMenu3()
+    // 店舗代表者削除機能
+    public function deleteOwner(Request $request)
     {
-        return view('menu.menu3');
+        $user = User::find($request->input('user_id'));
+        if ($user && $user->id == Auth::id()) {
+            $user->delete();
+        }
+        return redirect()->route('admin.shopkeeper')->with('status', '店舗代表者を削除しました。');
+    }
+
+    // 店舗代表者編集ページ表示
+    public function indexEdit()
+    {
+        return view('admin.edit');
+    }
+
+    // 店舗代表者編集機能
+    public function changeOwner(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user && $user->user_id == Auth::id()) {
+            $user->user_name = $request->input('name');
+            $user->user_email = $request->input('email');
+            if ($request->input('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
+            $user->save();
+        }
+        return redirect()->route('admin.shopkeeper')->with('status', '店舗代表者の情報を変更しました。');
+    }
+
+    // メール送信ページ表示
+    public function indexMail()
+    {
+        return view('admin.mail');
+    }
+
+    // 管理人用メニュー表示
+    public function indexAdminMenu()
+    {
+        return view('admin.menu');
     }
 }

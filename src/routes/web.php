@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -83,8 +84,41 @@ Route::middleware('auth')->group(function () {
 Route::get('menu/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
 
 // 管理人用ルート
+Route::middleware('admin')->group(function () {
+    Route::get('admin/index', [AdminController::class, 'indexAdmin'])->name('admin.index');
 
-Route::get('menu/menu3', [AdminController::class, 'indexMenu3'])->name('menu3');
+    Route::get('admin/create', [AdminController::class, 'indexCreate'])->name('admin.create');
+    Route::post('admin/create', [AdminController::class, 'createOwner']);
+
+    Route::get('admin/shopkeeper', [AdminController::class, 'indexShopkeeper'])->name('admin.shopkeeper');
+    Route::delete('admin/shopkeeper/cancel', [AdminController::class, 'deleteOwner']);
+
+    Route::get('admin/edit', [AdminController::class, 'indexEdit'])->name('admin.edit');
+    Route::post('owner/change/{id}', [AdminController::class, 'changeOwner']);
+
+    Route::get('admin/mail', [AdminController::class, 'indexMail'])->name('admin.mail');
+
+    Route::get('menu/admin_menu', [AdminController::class, 'indexAdminMenu'])->name('admin.menu');
+
+    Route::get('/logout',  [AuthController::class, 'logout']);
+});
 
 // 店舗代表者用ルート
-Route::get('menu/menu4', [AdminController::class, 'indexMenu4'])->name('menu4');
+Route::middleware('owner')->group(function () {
+    Route::get('owner/index', [OwnerController::class, 'indexOwner'])->name('owner.index');
+
+    Route::get('owner/create', [OwnerController::class, 'indexCreate'])->name('owner.create');
+    Route::post('owner/create', [OwnerController::class, 'createStore']);
+
+    Route::get('owner/store', [OwnerController::class, 'indexStore'])->name('owner.store');
+    Route::delete('owner/store/cancel', [OwnerController::class, 'deleteStore']);
+
+    Route::get('owner/edit', [OwnerController::class, 'indexEdit'])->name('owner.edit');
+    Route::post('owner/change', [OwnerController::class, 'changeOwner']);
+
+    Route::get('owner/res', [OwnerController::class, 'indexReservation'])->name('owner.res');
+
+    Route::get('menu/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
+
+    Route::get('/logout',  [AuthController::class, 'logout']);
+});

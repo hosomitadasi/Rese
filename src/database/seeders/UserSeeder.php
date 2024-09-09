@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -15,20 +16,26 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        Role::firstOrCreate(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'owner']);
+        Role::firstOrCreate(['name' => 'user']);
+
         $users = [
-            ['name' => '田中太郎', 'email' => 'example1@example.com', 'password' => 'password'],
+            ['name' => '管理人', 'email' => 'owner@example.com', 'password' => 'adminpass', 'role' => 'admin'],
 
-            ['name' => '佐藤恵', 'email' => 'example2@example.com', 'password' => 'password'],
+            ['name' => '店舗代表', 'email' => 'store@example.com', 'password' => 'ownerpass', 'role' => 'owner'],
 
-            ['name' => '鈴木拓郎', 'email' => 'example3@example.com', 'password' => 'password'],
+            ['name' => 'テスト太郎', 'email' => 'example@example.com', 'password' => 'taropass', 'role' => 'user'],
         ];
 
-        foreach ($users as $user) {
-            User::create([
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'password' => Hash::make($user['password'])
+        foreach ($users as $userData) {
+            $user = User::create([
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'password' => Hash::make($userData['password']),
         ]);
+
+        $user->assignRole($userData['role']);
         }
     }
 }
