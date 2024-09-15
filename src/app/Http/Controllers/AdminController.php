@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Mail\CampaignMail;
 
 class AdminController extends Controller
 {
-    // 管理人ホームページ表示
+    // 管理人ページ表示
     public function indexAdmin()
     {
-        return view('admin.index');
+        $user = Auth::user();
+
+        return view('admin.index', compact('user'));
     }
 
     // 店舗代表者作成ページ表示
@@ -83,9 +87,21 @@ class AdminController extends Controller
         return view('admin.mail');
     }
 
+    // メール送信処理
+    public function sendCampaignMail(Request $request)
+    {
+        $users = User::where('role', 3)->get();  // 利用者(role=3)のみを取得
+
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new CampaignMail($request->input('content')));
+        }
+
+        return redirect()->back()->with('status', 'キャンペーンメールを送信しました。');
+    }
+
     // 管理人用メニュー表示
     public function indexAdminMenu()
     {
-        return view('admin.menu');
+        return view('menu.admin_menu');
     }
 }

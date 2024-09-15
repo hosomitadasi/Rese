@@ -2,96 +2,65 @@
 
 @section('content')
 <div class="container">
-    @if (session('flash_alert'))
-    <div class="alert alert-danger">{{ session('flash_alert') }}</div>
-    @elseif(session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-    @endif
-    <div class="p-5">
-        <div class="col-6 card">
-            <div class="card-header">Stripe決済</div>
-            <div class="card-body">
-                <form id="card-form" action="{{ route('store') }}" method="POST">
-                    @csrf
-                    <div>
-                        <label for="card_number">カード番号</label>
-                        <div id="card-number" class="form-control"></div>
-                    </div>
+    <?php if (session('flash_alert')): ?>
+        <div class="error-message"><?= session('flash_alert') ?></div>
+    <?php elseif (session('status')): ?>
+        <div class="success-message"><?= session('status') ?></div>
+    <?php endif; ?>
 
-                    <div>
-                        <label for="card_expiry">有効期限</label>
-                        <div id="card-expiry" class="form-control"></div>
-                    </div>
-
-                    <div>
-                        <label for="card-cvc">セキュリティコード</label>
-                        <div id="card-cvc" class="form-control"></div>
-                    </div>
-
-                    <div id="card-errors" class="text-danger"></div>
-
-                    <button class="mt-3 btn btn-primary">支払い</button>
-                </form>
+    <div class="payment-form-container">
+        <h2>Stripe決済</h2>
+        <form id="card-form" action="{{ route('store') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="card-number">カード番号</label>
+                <div id="card-number" class="input-field"></div>
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="card-expiry">有効期限</label>
+                <div id="card-expiry" class="input-field"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="card-cvc">セキュリティコード</label>
+                <div id="card-cvc" class="input-field"></div>
+            </div>
+
+            <div id="card-errors" class="error-text"></div>
+
+            <button class="submit-button" type="submit">支払い</button>
+        </form>
     </div>
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    /* 基本設定*/
-    const stripe_public_key = "{{ config('stripe.stripe_public_key') }}"
-    const stripe = Stripe(stripe_public_key);
+    /* Stripeの基本設定 */
+    const stripePublicKey = "{{ config('stripe.stripe_public_key') }}";
+    const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
 
-    var cardNumber = elements.create('cardNumber');
+    const cardNumber = elements.create('cardNumber');
     cardNumber.mount('#card-number');
+
     cardNumber.on('change', function(event) {
-        var displayError = document.getElementById('card-errors');
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
+        const displayError = document.getElementById('card-errors');
+        displayError.textContent = event.error ? event.error.message : '';
     });
 
-    var cardExpiry = elements.create('cardExpiry');
+    const cardExpiry = elements.create('cardExpiry');
     cardExpiry.mount('#card-expiry');
-    cardExpiry.on('change', function(event) {
-        var displayError = document.getElementById('card-errors');
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
-    });
 
-    var cardCvc = elements.create('cardCvc');
+    const cardCvc = elements.create('cardCvc');
     cardCvc.mount('#card-cvc');
-    cardCvc.on('change', function(event) {
-        var displayError = document.getElementById('card-errors');
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
-    });
 
-    var form = document.getElementById('card-form');
+    const form = document.getElementById('card-form');
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-        var errorElement = document.getElementById('card-errors');
-        if (event.error) {
-            errorElement.textContent = event.error.message;
-        } else {
-            errorElement.textContent = '';
-        }
-
         stripe.createToken(cardNumber).then(function(result) {
             if (result.error) {
-                errorElement.textContent = result.error.message;
+                document.getElementById('card-errors').textContent = result.error.message;
             } else {
                 stripeTokenHandler(result.token);
             }
@@ -99,8 +68,8 @@
     });
 
     function stripeTokenHandler(token) {
-        var form = document.getElementById('card-form');
-        var hiddenInput = document.createElement('input');
+        const form = document.getElementById('card-form');
+        const hiddenInput = document.createElement('input');
         hiddenInput.setAttribute('type', 'hidden');
         hiddenInput.setAttribute('name', 'stripeToken');
         hiddenInput.setAttribute('value', token.id);
@@ -108,4 +77,5 @@
         form.submit();
     }
 </script>
+
 @endsection

@@ -2,12 +2,26 @@
 
 @section('content')
 <div class="menu-container">
-    <ul>
-        <li><a href="{{ route('admin.index') }}">Home</a></li>
-        <li><a href="{{ route('admin.create') }}">CreateOwner</a></li>
-        <li><a href="{{ route('admin.shopkeeper')}}">ShopKeeper</a></li>
-        <li><a href="{{ route('admin.mail')}}">Mail</a></li>
-        <li><a href="{{ route('logoutAdmin') }}">Logout</a></li>
-    </ul>
+    <form action="{{ route('admin.index') }}" method="GET">
+        <button type="submit">Home</button>
+    </form>
+
+    <form action="{{ route('admin.create') }}" method="GET">
+        <button type="submit">CreateOwner</button>
+    </form>
+
+    <form action="{{ route('admin.shopkeeper') }}" method="GET">
+        <button type="submit">ShopKeeper</button>
+    </form>
+
+    <form action="{{ route('admin.mail') }}" method="GET">
+        <button type="submit">Mail</button>
+    </form>
+
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
+
 </div>
 @endsection

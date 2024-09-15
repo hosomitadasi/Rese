@@ -22,20 +22,20 @@ class UserSeeder extends Seeder
 
         $users = [
             ['name' => '管理人', 'email' => 'owner@example.com', 'password' => 'adminpass', 'role' => 'admin'],
-
             ['name' => '店舗代表', 'email' => 'store@example.com', 'password' => 'ownerpass', 'role' => 'owner'],
-
             ['name' => 'テスト太郎', 'email' => 'example@example.com', 'password' => 'taropass', 'role' => 'user'],
         ];
 
         foreach ($users as $userData) {
             $user = User::create([
-            'name' => $userData['name'],
-            'email' => $userData['email'],
-            'password' => Hash::make($userData['password']),
-        ]);
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => Hash::make($userData['password']),
+                'role' => $userData['role'] === 'admin' ? 1 : ($userData['role'] === 'owner' ? 2 : 3), // roleカラムに適切な値を設定
+            ]);
 
-        $user->assignRole($userData['role']);
+            // Spatieのロールも同時に設定
+            $user->assignRole($userData['role']);
         }
     }
 }

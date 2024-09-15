@@ -29,16 +29,13 @@ class AuthController extends Controller
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'role' => 3,
+                'role' => $request['role'],
             ]);
+            $user->save();
 
             event(new Registered($user));
 
-            $user->save();
-
-            Auth::login($user);
-
-            return redirect()->route('verification.notice');
+            return redirect()->route('auth.thanks')->with('status', '認証用のメールを送信しました！');
         } catch (\Throwable $th) {
             \Log::error($th);
             return redirect('register')->with('result', 'エラーが発生しました');
@@ -77,17 +74,12 @@ class AuthController extends Controller
     }
 
     // ログアウト機能
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        session()->flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
-    }
-
-    // ログイン後メニューページ（home_menu1.blade.php）表示機能
-    public function indexHomeMenu()
-    {
-        return view('menu.home_menu');
     }
 
      // ログイン前メニューページ（auth_menu.blade.php）表示機能

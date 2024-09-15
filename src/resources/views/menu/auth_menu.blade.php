@@ -2,10 +2,20 @@
 
 @section('content')
 <div class="menu-container">
-    <ul>
-        <li><a href="{{ route('home') }}">Home</a></li>
-        <li><a href="{{ route('register') }}">Registration</a></li>
-        <li><a href="{{ route('login') }}">Login</a></li>
-    </ul>
+    <form action="{{ route('home') }}" method="GET">
+        @csrf
+        <button type="submit"><p>Home</p></button>
+    </form>
+
+    <form action="{{ route('register') }}" method="GET">
+        @csrf
+        <button type="submit"><p>Registration</p></button>
+    </form>
+
+    <form action="{{ route('login') }}" method="GET">
+        @csrf
+        <button type="submit"><p>Login</p></button>
+    </form>
+
 </div>
 @endsection

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="edit-form">
+    <button onclick="location.href='admin.shopkeeper'">&lt; Back</button>
     <h2>店舗代表者新規作成</h2>
     <div class="before-code">
         <div>

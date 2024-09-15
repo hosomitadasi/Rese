@@ -46,7 +46,17 @@
 
     <script>
         document.getElementById('menu-icon').addEventListener('click', function() {
-            window.location.href = "{{ auth()->check() ? route('home_menu') : route('auth_menu') }}";
+            @if(auth()->check())
+            @if(auth()->user()->hasRole('admin'))
+            window.location.href = "{{ route('admin.menu') }}";
+            @elseif(auth()->user()->hasRole('owner'))
+            window.location.href = "{{ route('owner.menu') }}";
+            @else
+            window.location.href = "{{ route('home_menu') }}";
+            @endif
+            @else
+            window.location.href = "{{ route('auth_menu') }}";
+            @endif
         });
     </script>
 </header>

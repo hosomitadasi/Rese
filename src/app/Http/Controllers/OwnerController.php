@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class OwnerController extends Controller
 {
@@ -25,7 +27,6 @@ class OwnerController extends Controller
         try {
             $store = new Store([
                 'name' => $request['name'],
-                ''
             ]);
             $store->save();
             return redirect()->route('owner.index');
@@ -66,7 +67,7 @@ class OwnerController extends Controller
         return view('owner.edit');
     }
 
-    // 店舗代表者編集機能
+    // 店舗編集機能
     public function changeStore(Request $request, $id)
     {
         $store = Store::find($id);
@@ -75,15 +76,16 @@ class OwnerController extends Controller
         return redirect()->route('owner.store')->with('status', '店舗代表者の情報を変更しました。');
     }
 
-    // メール送信ページ表示
+    // 予約情報表示ページ
     public function indexReservation()
     {
         return view('owner.res');
     }
 
     // 管理人用メニュー表示
-    public function indexAdminMenu()
+    public function indexOwnerMenu()
     {
         return view('menu.owner_menu');
     }
+
 }

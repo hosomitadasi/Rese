@@ -34,7 +34,6 @@
                 <form method="GET" action="{{ route('generate.qr', $reservation->id) }}" target="_blank">
                     <button type="submit" class="qr-button">QRコードを作成</button>
                 </form>
-                <img src="{{ route('generate.qr', ['reservationID' => $reservation->id, 'rand' => uniqid()]) }}" alt="QR Code" />
 
                 <form method="GET" action="{{ route('payment', $reservation->id) }}">
                     <button class="payment-button">決済画面へ</button>

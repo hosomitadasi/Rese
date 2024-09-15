@@ -17,6 +17,9 @@ Route::get('search', [StoreController::class, 'search'])->name('search');
 // 飲食店詳細ページ表示ルート
 Route::get('/detail/{id}', [StoreController::class, 'indexDetail'])->name('detail');
 
+// ログイン前表示
+Route::get('menu/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
+
 // 認証ルート
 Route::get('register', [AuthController::class, 'indexRegister'])->name('register');
 Route::post('register', [AuthController::class, 'createRegister']);
@@ -27,30 +30,29 @@ Route::get('login', [AuthController::class, 'indexLogin'])->name('login');
 
 Route::post('login', [AuthController::class, 'postLogin']);
 
-// メール確認用ルート
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+//メール確認用ルート
+Route::middleware(['auth'])->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+    Route::get('email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/dashboard');
+    })->middleware(['signed'])->name('verification.verify');
 
-    return redirect('/thanks');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['throttle:6,1'])->name('verification.send');
+});
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
-
-// ログイン後処理ルート
+// 利用者用ルート
 Route::middleware('auth')->group(function () {
     // マイページ表示処理ルート
     Route::get('/mypage', [StoreController::class, 'indexMypage'])->name('mypage');
 
-    // ログアウト処理ルート
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // 予約処理ルート
     Route::post('reserve', [StoreController::class, 'addReservation'])->name('reserve');
@@ -67,8 +69,6 @@ Route::middleware('auth')->group(function () {
     // 予約完了ページ表示処理ルート
     Route::get('done/{shop}', [StoreController::class, 'indexDone'])->name('done');
 
-    Route::get('menu/home_menu', [AuthController::class, 'indexHomeMenu'])->name('home_menu');
-
     // レビュー作成処理ルート
     Route::post('/reviews', [StoreController::class, 'review'])->name('reviews.store');
 
@@ -78,13 +78,13 @@ Route::middleware('auth')->group(function () {
     // 決済機能処理ルート
     Route::get('payment', [StoreController::class, 'createPayment'])->name('payment');
     Route::post('/store', [StoreController::class, 'storePayment'])->name('store');
+
+    // ログイン後メニュー表示
+    Route::get('menu/home_menu', [StoreController::class, 'indexHomeMenu'])->name('home_menu');
 });
 
-
-Route::get('menu/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
-
 // 管理人用ルート
-Route::middleware('admin')->group(function () {
+Route::middleware(['web', 'admin'])->group(function () {
     Route::get('admin/index', [AdminController::class, 'indexAdmin'])->name('admin.index');
 
     Route::get('admin/create', [AdminController::class, 'indexCreate'])->name('admin.create');
@@ -99,26 +99,21 @@ Route::middleware('admin')->group(function () {
     Route::get('admin/mail', [AdminController::class, 'indexMail'])->name('admin.mail');
 
     Route::get('menu/admin_menu', [AdminController::class, 'indexAdminMenu'])->name('admin.menu');
-
-    Route::get('/logout',  [AuthController::class, 'logout']);
 });
 
 // 店舗代表者用ルート
-Route::middleware('owner')->group(function () {
+Route::middleware(['web', 'owner'])->group(function () {
     Route::get('owner/index', [OwnerController::class, 'indexOwner'])->name('owner.index');
 
     Route::get('owner/create', [OwnerController::class, 'indexCreate'])->name('owner.create');
-    Route::post('owner/create', [OwnerController::class, 'createStore']);
 
     Route::get('owner/store', [OwnerController::class, 'indexStore'])->name('owner.store');
-    Route::delete('owner/store/cancel', [OwnerController::class, 'deleteStore']);
 
     Route::get('owner/edit', [OwnerController::class, 'indexEdit'])->name('owner.edit');
-    Route::post('owner/change', [OwnerController::class, 'changeOwner']);
 
     Route::get('owner/res', [OwnerController::class, 'indexReservation'])->name('owner.res');
 
-    Route::get('menu/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
+    Route::post('admin/send_mail', [AdminController::class, 'sendCampaignMail'])->name('admin.send_mail');
 
-    Route::get('/logout',  [AuthController::class, 'logout']);
+    Route::get('menu/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
 });

@@ -189,7 +189,7 @@ class StoreController extends Controller
         ]);
 
         $qrCode = QrCode::size(200)->generate($qrDate);
-        return response($qrCode)->header('Content-Type', 'image/png');
+        return response($qrCode, 200)->header('Content-Type', 'image/png');
     }
 
     // 決済画面表示
@@ -213,5 +213,11 @@ class StoreController extends Controller
             return back()->with('flash_alert', '決済に失敗しました！(' . $e->getMessage() . ')');
         }
         return back()->with('status', '決済が完了しました！');
+    }
+
+    // ログイン後メニューページ（home_menu.blade.php）表示機能
+    public function indexHomeMenu()
+    {
+        return view('menu.home_menu');
     }
 }
