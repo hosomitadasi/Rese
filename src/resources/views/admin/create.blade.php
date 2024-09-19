@@ -2,9 +2,10 @@
 
 @section('content')
 <div class="create-form">
-    <button onclick="location.href='admin.index'">&lt; Back</button>
+    <button onclick="location.href='/admin/index'">&lt; Back</button>
     <h2>店舗代表者新規作成</h2>
-    <form>
+    <form action="{{ route('admin.createOwner') }}" method="POST">
+        @csrf
         <label>名前
             <input type="text" name="name">
             @error('name')

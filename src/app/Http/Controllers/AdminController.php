@@ -28,6 +28,12 @@ class AdminController extends Controller
     // 店舗代表者作成
     public function createOwner(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
         try {
             $user = new User([
                 'name' => $request['name'],
@@ -36,7 +42,7 @@ class AdminController extends Controller
                 'role' =>2,
             ]);
             $user->save();
-            return redirect()->route('admin.index');
+            return redirect()->route('admin.index')->with('result', '新しい代表を登録しました。');
         } catch (\Throwable $e) {
             \Log::error($e);
             return redirect('admin.create')->with('result', 'エラーが発生しました');
@@ -44,42 +50,51 @@ class AdminController extends Controller
     }
 
     // 店舗代表者管理ページ表示
-    public function indexShopkeeper()
+    public function indexShopkeeper(Request $request)
     {
-        $user = Auth::user();
-        return view('admin.shopkeeper', compact('user'));
+        $query = User::where('role', 2);
+
+        if($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $owners = $query->paginate(10);
+
+        return view('admin.shopkeeper', compact('owners'));
     }
 
     // 店舗代表者削除機能
-    public function deleteOwner(Request $request)
+    public function deleteOwner($id)
     {
-        $user = User::find($request->input('user_id'));
-        if ($user && $user->id == Auth::id()) {
-            $user->delete();
-        }
+        $owner = User::findOrFail($id);
+        $owner->delete();
+
         return redirect()->route('admin.shopkeeper')->with('status', '店舗代表者を削除しました。');
     }
 
-    // 店舗代表者編集ページ表示
-    public function indexEdit()
+    public function editOwner($id)
     {
-        return view('admin.edit');
+        $owner = User::findOrFail($id);
+        return view('admin.editOwner', compact('owner'));
     }
 
-    // 店舗代表者編集機能
-    public function changeOwner(Request $request, $id)
+    public function updateOwner(Request $request, $id)
     {
-        $user = User::find($id);
-        if ($user && $user->user_id == Auth::id()) {
-            $user->user_name = $request->input('name');
-            $user->user_email = $request->input('email');
-            if ($request->input('password')) {
-                $user->password = Hash::make($request->input('password'));
-            }
-            $user->save();
+        $owner = User::findOrFail($id);
+        $owner->name = $request->input('name');
+        $owner->email = $request->input('email');
+        if ($request->filled('password')) {
+            $owner->password = Hash::make($request->input('password'));
         }
-        return redirect()->route('admin.shopkeeper')->with('status', '店舗代表者の情報を変更しました。');
+        $owner->save();
+
+        return redirect()->route('admin.shopkeeper')->with('status', '店舗代表者の情報を更新しました。');
     }
+
 
     // メール送信ページ表示
     public function indexMail()

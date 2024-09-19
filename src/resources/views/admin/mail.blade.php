@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="mail-form">
-    <button onclick="location.href='admin.index'">&lt; Back</button>
+    <button onclick="location.href='/admin/index'">&lt; Back</button>
 
     <form action="{{ route('admin.send_mail') }}" method="POST">
         @csrf

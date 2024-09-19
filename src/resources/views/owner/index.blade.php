@@ -2,7 +2,10 @@
 
 @section('content')
 <div class="admin-index">
-    <h2>〇〇さん</h2>
+    @if(session('result'))
+    <p>{{ session('result') }}</p>
+    @endif
+    <h2>{{ $user->name }}さん</h2>
     <div class="admin-route">
         <a href="{{ route('owner.create') }}">CreateStore</a>
         <a href="{{ route('owner.store') }}">Store</a>

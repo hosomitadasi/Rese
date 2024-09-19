@@ -37,7 +37,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     /* Stripeの基本設定 */
-    const stripePublicKey = "{{ config('stripe.stripe_public_key') }}";
+    const stripePublicKey = "{{ config('services.stripe.key') }}";
     const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
 

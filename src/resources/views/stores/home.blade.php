@@ -4,7 +4,7 @@
 <div class="shop-list">
     @foreach($stores as $store)
     <div class="shop-item">
-        <img src="{{ $store->photo }}" alt="{{ $store->name }}">
+        <img src="{{ Storage::url('photos/' . $store->photo) }}" alt="{{ $store->name }}">
         <h3>{{ $store->name }}</h3>
         <p>#<span>{{ $store->area->area }}</span></p>
         <p>#<span>{{ $store->genre->genre }}</span></p>

@@ -6,7 +6,7 @@
     <div class="shop-content">
         <div class="shop-info">
             <h1>{{ $shop->name }}</h1>
-            <img src="{{ $shop->photo }}" alt="{{ $shop->name }}">
+            <img src="{{ Storage::url('photos/' . $shop->photo) }}" alt="{{ $shop->name }}">
             <p>{{ $shop->overview }}</p>
 
             <!-- レビュー入力フォーム -->

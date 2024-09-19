@@ -47,7 +47,7 @@
                 @foreach($favorites as $favorite)
                 @if ($favorite->store)
                 <div class="favorite-item">
-                    <img src="{{ $favorite->store->photo }}" alt="{{ $favorite->store->name }}">
+                    <img src="{{ Storage::url('photos/' . $favorite->store->photo) }}" alt="{{ $favorite->store->name }}">
                     <p>{{ $favorite->store->name }}</p>
                     <p>#{{ $favorite->store->area->area }} #{{ $favorite->store->genre->genre }}</p>
                     <button onclick="window.location.href='/detail/{{ $favorite->store->id }}'">詳しく見る</button>

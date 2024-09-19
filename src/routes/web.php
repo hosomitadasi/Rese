@@ -88,15 +88,16 @@ Route::middleware(['web', 'admin'])->group(function () {
     Route::get('admin/index', [AdminController::class, 'indexAdmin'])->name('admin.index');
 
     Route::get('admin/create', [AdminController::class, 'indexCreate'])->name('admin.create');
-    Route::post('admin/create', [AdminController::class, 'createOwner']);
+    Route::post('admin/createOwner', [AdminController::class, 'createOwner'])->name('admin.createOwner');
 
     Route::get('admin/shopkeeper', [AdminController::class, 'indexShopkeeper'])->name('admin.shopkeeper');
-    Route::delete('admin/shopkeeper/cancel', [AdminController::class, 'deleteOwner']);
+    Route::delete('admin/shopkeeper/{id}', [AdminController::class, 'deleteOwner'])->name('admin.deleteOwner');
+    Route::get('admin/shopkeeper/edit/{id}', [AdminController::class, 'editOwner'])->name('admin.editOwner');
+    Route::post('admin/shopkeeper/edit/{id}', [AdminController::class, 'updateOwner'])->name('admin.updateOwner');
 
-    Route::get('admin/edit', [AdminController::class, 'indexEdit'])->name('admin.edit');
-    Route::post('owner/change/{id}', [AdminController::class, 'changeOwner']);
 
     Route::get('admin/mail', [AdminController::class, 'indexMail'])->name('admin.mail');
+    Route::post('admin/send_mail', [AdminController::class, 'sendCampaignMail'])->name('admin.send_mail');
 
     Route::get('menu/admin_menu', [AdminController::class, 'indexAdminMenu'])->name('admin.menu');
 });
@@ -106,14 +107,13 @@ Route::middleware(['web', 'owner'])->group(function () {
     Route::get('owner/index', [OwnerController::class, 'indexOwner'])->name('owner.index');
 
     Route::get('owner/create', [OwnerController::class, 'indexCreate'])->name('owner.create');
+    Route::post('owner/createStore', [OwnerController::class, 'createStore'])->name('owner.createStore');
+
 
     Route::get('owner/store', [OwnerController::class, 'indexStore'])->name('owner.store');
 
-    Route::get('owner/edit', [OwnerController::class, 'indexEdit'])->name('owner.edit');
-
     Route::get('owner/res', [OwnerController::class, 'indexReservation'])->name('owner.res');
 
-    Route::post('admin/send_mail', [AdminController::class, 'sendCampaignMail'])->name('admin.send_mail');
 
     Route::get('menu/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
 });

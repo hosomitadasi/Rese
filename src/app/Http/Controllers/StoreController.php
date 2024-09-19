@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ReservationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Area;
@@ -180,16 +181,30 @@ class StoreController extends Controller
             return response('予約が見つかりません', 404);
         }
 
-        $qrDate = json_encode([
-            'id' => $reservation->id,
-            'name' => $reservation->user->name,
-            'date' => $reservation->reservation_date,
-            'time' => $reservation->reservation_time,
-            'people' => $reservation->num_people
-        ]);
+        $store = Store::find($reservation->store_id);
 
-        $qrCode = QrCode::size(200)->generate($qrDate);
-        return response($qrCode, 200)->header('Content-Type', 'image/png');
+        if (!$store) {
+            return response('店舗情報が見つかりません', 404);
+        }
+
+        try {
+            $qrDate = json_encode([
+                'id' => $reservation->id,
+                'name' => $reservation->user->name,
+                'store_name' => $store->name,
+                'store_area' => $store->area,
+                'date' => $reservation->reservation_date,
+                'time' => $reservation->reservation_time,
+                'people' => $reservation->num_people
+            ]);
+
+            $qrCode = QrCode::size(200)->generate($qrDate);
+
+            return response($qrCode, 200)->header('Content-Type', 'image/png');
+        } catch (\Exception $e) {
+            Log::error("Failed to generate QR code: " . $e->getMessage());
+            return response('QRコードの生成に失敗しました', 500);
+        }
     }
 
     // 決済画面表示
