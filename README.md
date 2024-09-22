@@ -38,7 +38,7 @@ localhost/
 - PHP：7.4.9
 - Webサーバー：Nginx/1.21.1
 - データベース：MySQL8.0.26
-- Docker：Docker Compose 3.8
+- Docker：Docker Compose version v2.23.0-desktop.1
 
 　アプリケーションの実行環境はDockerを使用して構築されています。以下のサービスが'docker-compose.yml'に定義されています。
 version: '3.8'
