@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="create-form">
-    <button onclick="location.href='owners.index'">&lt; Back</button>
+    <button onclick="location.href='index'">&lt; Back</button>
     <h2>店舗新規作成</h2>
     <form action="{{ route('owners.createStore') }}" method="POST" enctype="multipart/form-data">
         @csrf

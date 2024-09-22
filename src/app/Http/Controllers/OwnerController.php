@@ -3,25 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
 class OwnerController extends Controller
 {
-    // 店舗代表者用ホームページ表示
+
     public function indexOwner(Request $request)
     {
         return view('owners.index');
     }
 
-    // 店舗作成ページ表示
     public function indexCreate()
     {
-        return view('owners.create');
+
+        $areas = \App\Models\Area::all();
+        $genres = \App\Models\Genre::all();
+
+        return view('owners.create', compact('areas', 'genres'));
     }
 
-    // 店舗作成
     public function createStore(Request $request)
     {
         $validated = $request->validate([
@@ -48,8 +51,6 @@ class OwnerController extends Controller
         return redirect()->route('owners.store')->with('success', '店舗が作成されました');
     }
 
-
-    // 店舗管理ページ表示
     public function indexStore(Request $request)
     {
         $stores = Store::query();

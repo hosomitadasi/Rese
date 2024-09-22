@@ -111,7 +111,10 @@ Route::middleware(['web', 'owner'])->group(function () {
     Route::post('owners/createStore', [OwnerController::class, 'createStore'])->name('owners.createStore');
 
 
+    Route::get('owners/store/{id}/edit', [OwnerController::class, 'editStore'])->name('owners.editStore');
+
     Route::get('owners/store', [OwnerController::class, 'indexStore'])->name('owners.store');
+    Route::delete('owners/store/{id}', [OwnerController::class, 'deleteStore'])->name('owners.deleteStore');
 
     Route::get('owners/res', [OwnerController::class, 'indexReservation'])->name('owners.res');
 

@@ -27,5 +27,5 @@
     </tbody>
 </table>
 
-{{ $reservations->links() }} <!-- ページネーション -->
+{{ $reservations->links() }}
 @endsection
