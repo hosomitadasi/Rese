@@ -34,11 +34,11 @@ localhost/
 - 決済処理
 
 ## 使用技術
-- フレームワーク：
-- PHP：
-- Webサーバー：
-- データベース：
-- Docker：
+- フレームワーク：Laravel8.83.27
+- PHP：7.4.9
+- Webサーバー：Nginx/1.21.1
+- データベース：MySQL8.0.26
+- Docker：Docker Compose 3.8
 
 　アプリケーションの実行環境はDockerを使用して構築されています。以下のサービスが'docker-compose.yml'に定義されています。
 version: '3.8'
@@ -139,9 +139,6 @@ MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 STRIPE_KEY=pk_test_51PpAOfP5Gj9Ev2BwBU8b8b5dBIsXPslkeofLcumexqr6FTzjPlC6qkJHCmkGcvfMgQyPwFCyvU5Z6qiyHYDjfbVS00uq6mHVFz
 STRIPE_SECRET=sk_test_51PpAOfP5Gj9Ev2BwpYi8svYtdhgqNv3Oe3iXt2dFbK8dDMTAgmOXQPSAb38vuvrLsSnj085Ht5P5wM0cYmZkpKgv00RkUdjPy7
-
-## テーブル設計
-
 
 ## ER図
 Rese.dio
