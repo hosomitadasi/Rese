@@ -1,8 +1,7 @@
 # Rese
 概要説明：登録したユーザーがそれぞれの店舗の予約を簡単に行えるアプリ。
 
-トップ画面の画像
-
+トップ画面の画像：http://localhost/?_token=pad0pdCLiNQd2IquHrmi7Bz1NwutG2kB8Se2ol4x
 
 ## 作成した目的
 
