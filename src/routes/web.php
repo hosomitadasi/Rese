@@ -18,13 +18,13 @@ Route::get('search', [StoreController::class, 'search'])->name('search');
 Route::get('/detail/{id}', [StoreController::class, 'indexDetail'])->name('detail');
 
 // ログイン前表示
-Route::get('menu/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
+Route::get('menus/auth_menu', [AuthController::class, 'indexAuthMenu'])->name('auth_menu');
 
 // 認証ルート
 Route::get('register', [AuthController::class, 'indexRegister'])->name('register');
 Route::post('register', [AuthController::class, 'createRegister']);
 
-Route::get('thanks', [AuthController::class, 'indexThanks'])->name('thanks');
+Route::get('/thanks', [AuthController::class, 'indexThanks'])->name('auth.thanks');
 
 Route::get('login', [AuthController::class, 'indexLogin'])->name('login');
 
@@ -80,40 +80,41 @@ Route::middleware('auth')->group(function () {
     Route::post('/store', [StoreController::class, 'storePayment'])->name('store');
 
     // ログイン後メニュー表示
-    Route::get('menu/home_menu', [StoreController::class, 'indexHomeMenu'])->name('home_menu');
+    Route::get('menus/home_menu', [StoreController::class, 'indexHomeMenu'])->name('home_menu');
 });
 
 // 管理人用ルート
 Route::middleware(['web', 'admin'])->group(function () {
-    Route::get('admin/index', [AdminController::class, 'indexAdmin'])->name('admin.index');
+    Route::get('admins/index', [AdminController::class, 'indexAdmin'])->name('admins.index');
 
-    Route::get('admin/create', [AdminController::class, 'indexCreate'])->name('admin.create');
-    Route::post('admin/createOwner', [AdminController::class, 'createOwner'])->name('admin.createOwner');
+    Route::get('admins/create', [AdminController::class, 'indexCreate'])->name('admins.create');
+    Route::post('admins/createOwner', [AdminController::class, 'createOwner'])->name('admins.createOwner');
 
-    Route::get('admin/shopkeeper', [AdminController::class, 'indexShopkeeper'])->name('admin.shopkeeper');
-    Route::delete('admin/shopkeeper/{id}', [AdminController::class, 'deleteOwner'])->name('admin.deleteOwner');
-    Route::get('admin/shopkeeper/edit/{id}', [AdminController::class, 'editOwner'])->name('admin.editOwner');
-    Route::post('admin/shopkeeper/edit/{id}', [AdminController::class, 'updateOwner'])->name('admin.updateOwner');
+    Route::get('admins/shopkeeper', [AdminController::class, 'indexShopkeeper'])->name('admins.shopkeeper');
+    Route::delete('admins/shopkeeper/{id}', [AdminController::class, 'deleteOwner'])->name('admins.deleteOwner');
+
+    Route::get('admins/shopkeeper/edit/{id}', [AdminController::class, 'editOwner'])->name('admins.editOwner');
+    Route::post('admins/shopkeeper/edit/{id}', [AdminController::class, 'updateOwner'])->name('admins.updateOwner');
 
 
-    Route::get('admin/mail', [AdminController::class, 'indexMail'])->name('admin.mail');
-    Route::post('admin/send_mail', [AdminController::class, 'sendCampaignMail'])->name('admin.send_mail');
+    Route::get('admins/mail', [AdminController::class, 'indexMail'])->name('admins.mail');
+    Route::post('admins/send_mail', [AdminController::class, 'sendCampaignMail'])->name('admins.send_mail');
 
-    Route::get('menu/admin_menu', [AdminController::class, 'indexAdminMenu'])->name('admin.menu');
+    Route::get('menus/admin_menu', [AdminController::class, 'indexAdminMenu'])->name('admin.menu');
 });
 
 // 店舗代表者用ルート
 Route::middleware(['web', 'owner'])->group(function () {
-    Route::get('owner/index', [OwnerController::class, 'indexOwner'])->name('owner.index');
+    Route::get('owners/index', [OwnerController::class, 'indexOwner'])->name('owners.index');
 
-    Route::get('owner/create', [OwnerController::class, 'indexCreate'])->name('owner.create');
-    Route::post('owner/createStore', [OwnerController::class, 'createStore'])->name('owner.createStore');
-
-
-    Route::get('owner/store', [OwnerController::class, 'indexStore'])->name('owner.store');
-
-    Route::get('owner/res', [OwnerController::class, 'indexReservation'])->name('owner.res');
+    Route::get('owners/create', [OwnerController::class, 'indexCreate'])->name('owners.create');
+    Route::post('owners/createStore', [OwnerController::class, 'createStore'])->name('owners.createStore');
 
 
-    Route::get('menu/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
+    Route::get('owners/store', [OwnerController::class, 'indexStore'])->name('owners.store');
+
+    Route::get('owners/res', [OwnerController::class, 'indexReservation'])->name('owners.res');
+
+
+    Route::get('menus/owner_menu', [OwnerController::class, 'indexOwnerMenu'])->name('owner.menu');
 });

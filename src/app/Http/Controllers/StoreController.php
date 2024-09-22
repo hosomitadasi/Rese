@@ -23,7 +23,6 @@ use Ramsey\Uuid\Builder\FallbackBuilder;
 
 class StoreController extends Controller
 {
-    // 飲食店一覧ページ（home.blade.php）表示
     public function indexHome()
     {
         $user = Auth::user();
@@ -38,7 +37,6 @@ class StoreController extends Controller
         return view('stores.home', compact('stores', 'areas', 'genres'));
     }
 
-    // 飲食店検索
     public function search(Request $request)
     {
         $user = Auth::user();
@@ -62,14 +60,12 @@ class StoreController extends Controller
         return view('stores.home', compact('stores', 'areas', 'genres'));
     }
 
-    // 飲食店詳細ページ（detail.blade.php）表示
     public function indexDetail($id)
     {
         $shop = Store::findOrFail($id);
         return view('stores.detail', compact('shop'));
     }
 
-    // マイページ（mypage.blade.php）表示
     public function indexMypage()
     {
         $user = Auth::user();
@@ -79,7 +75,6 @@ class StoreController extends Controller
         return view('stores.mypage', compact('user', 'reservations', 'favorites'));
     }
 
-    // レビュー作成
     public function review(Request $request)
     {
 
@@ -99,7 +94,6 @@ class StoreController extends Controller
         return redirect()->back()->with('message', 'レビューが投稿されました');
     }
 
-    // お気に入り追加、削除
     public function toggleFavorite($id)
     {
         $user_id = Auth::id();
@@ -117,7 +111,6 @@ class StoreController extends Controller
         }
     }
 
-    // 予約作成
     public function addReservation(ReservationRequest $request)
     {
         $currentDateTime = now();
@@ -141,14 +134,12 @@ class StoreController extends Controller
         }
     }
 
-    // 予約完了ページ（done.blade.php）表示
     public function indexDone($shopID)
     {
         $shop = Store::findOrFail($shopID);
         return view('stores.done', compact('shop'));
     }
 
-    // 予約削除
     public function cancelReservation(Request $request, $id)
     {
         $reservation = Reservation::find($id);
@@ -158,7 +149,6 @@ class StoreController extends Controller
         return redirect()->route('mypage')->with('status', '予約をキャンセルしました。');
     }
 
-    // 予約変更
     public function changeReservation(Request $request, $id)
     {
         $reservation = Reservation::find($id);
@@ -172,7 +162,6 @@ class StoreController extends Controller
         return redirect()->route('mypage')->with('status', '予約を変更しました。');
     }
 
-    // QRコード作成
     public function generateQrCode($reservationID)
     {
         $reservation = Reservation::find($reservationID);
@@ -207,13 +196,11 @@ class StoreController extends Controller
         }
     }
 
-    // 決済画面表示
     public function createPayment()
     {
         return view('stores.payment');
     }
 
-    // 決済実行
     public function storePayment(StorePaymentRequest $request)
     {
         \Stripe\Stripe::setApiKey(config('stripe.stripe_secret_key'));
@@ -230,9 +217,8 @@ class StoreController extends Controller
         return back()->with('status', '決済が完了しました！');
     }
 
-    // ログイン後メニューページ（home_menu.blade.php）表示機能
     public function indexHomeMenu()
     {
-        return view('menu.home_menu');
+        return view('menus.home_menu');
     }
 }

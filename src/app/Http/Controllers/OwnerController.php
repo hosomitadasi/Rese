@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\Http;
 class OwnerController extends Controller
 {
     // 店舗代表者用ホームページ表示
-    public function indexOwner()
+    public function indexOwner(Request $request)
     {
-        return view('owner.index');
+        return view('owners.index');
     }
 
     // 店舗作成ページ表示
     public function indexCreate()
     {
-        return view('owner.create');
+        return view('owners.create');
     }
 
     // 店舗作成
@@ -45,7 +45,7 @@ class OwnerController extends Controller
             'photo' => $photoName,
         ]);
 
-        return redirect()->route('owner.store')->with('success', '店舗が作成されました');
+        return redirect()->route('owners.store')->with('success', '店舗が作成されました');
     }
 
 
@@ -65,23 +65,21 @@ class OwnerController extends Controller
         }
 
         $stores = $stores->paginate(10);
-        return view('owner.store', compact('stores'));
+        return view('owners.store', compact('stores'));
     }
 
-    // 店舗削除機能
     public function deleteStore($id)
     {
         $store = Store::findOrFail($id);
         $store->delete();
 
-        return redirect()->route('owner.store')->with('success', '店舗が削除されました');
+        return redirect()->route('owners.store')->with('success', '店舗が削除されました');
     }
 
-    // 店舗編集機能
     public function editStore($id)
     {
         $store = Store::findOrFail($id);
-        return view('owner.edit', compact('store'));
+        return view('owners.edit', compact('store'));
     }
 
     public function updateStore(Request $request, $id)
@@ -89,11 +87,9 @@ class OwnerController extends Controller
         $store = Store::findOrFail($id);
         $store->update($request->all());
 
-        return redirect()->route('owner.store')->with('success', '店舗が更新されました');
+        return redirect()->route('owners.store')->with('success', '店舗が更新されました');
     }
 
-
-    // 予約情報表示ページ
     public function indexReservation(Request $request)
     {
         $reservations = Reservation::with('store');
@@ -106,13 +102,12 @@ class OwnerController extends Controller
         }
 
         $reservations = $reservations->paginate(10);
-        return view('owner.res', compact('reservations'));
+        return view('owners.res', compact('reservations'));
     }
 
-    // 管理人用メニュー表示
     public function indexOwnerMenu()
     {
-        return view('menu.owner_menu');
+        return view('menus.owner_menu');
     }
 
 }

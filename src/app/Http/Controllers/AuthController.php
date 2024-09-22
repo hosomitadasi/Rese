@@ -15,13 +15,11 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
-    // 会員登録ページ（register.blade.php）表示機能
     public function indexRegister()
     {
         return view('auth.register');
     }
 
-    // 会員登録機能
     public function  createRegister(RegisterRequest $request)
     {
         try {
@@ -42,38 +40,33 @@ class AuthController extends Controller
         }
     }
 
-    // 登録完了ページ（thanks.blade.php）表示機能
     public function indexThanks()
     {
         return view('auth.thanks');
     }
 
-    // ログインページ（login.blade.php）表示機能
     public function indexLogin()
     {
         return view('auth.login');
     }
 
-    // ログイン処理機能
     public function postLogin(LoginRequest $request)
     {
         if (Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
             $user = Auth::user();
 
-            // ユーザーの役割に応じてリダイレクト先を変更
             if ($user->role == 1) {
-                return redirect()->route('admin.index'); // 管理者用ページへ
+                return redirect()->route('admins.index');
             } elseif ($user->role == 2) {
-                return redirect()->route('owner.index'); // 店舗代表者ページへ
+                return redirect()->route('owners.index');
             } else {
-                return redirect('/mypage'); // 利用者ページへ
+                return redirect('/mypage');
             }
         } else {
             return redirect('login')->with('result', 'メールアドレスまたはパスワードが間違ってます。');
         }
     }
 
-    // ログアウト機能
     public function logout(Request $request)
     {
         Auth::logout();
@@ -82,10 +75,9 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-     // ログイン前メニューページ（auth_menu.blade.php）表示機能
     public function indexAuthMenu()
     {
-        return view('menu.auth_menu');
+        return view('menus.auth_menu');
     }
 
 }
