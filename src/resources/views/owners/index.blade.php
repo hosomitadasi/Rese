@@ -5,7 +5,6 @@
     @if(session('result'))
     <p>{{ session('result') }}</p>
     @endif
-    <h2></h2>
     <div class="admin-route">
         <a href="{{ route('owners.create') }}">CreateStore</a>
         <a href="{{ route('owners.store') }}">Store</a>

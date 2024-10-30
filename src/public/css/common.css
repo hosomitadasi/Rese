@@ -1,0 +1,56 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 共通 */
+#app {
+    background-color: #eeeeee;
+    width: 100vw;
+    min-height: 100vh;
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック",
+        "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3",
+        "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo,
+        "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+.flex {
+    display: flex;
+}
+
+.wrap {
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+.center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.ml-a {
+    margin-left: auto;
+}
+
+.main {
+    width: 85%;
+    margin: 0 auto;
+    padding: 2.5rem 0;
+}
+
+.flash_message {
+    text-align: center;
+    background-color: #00c32ce0;
+    padding: 0.25rem 0;
+    color: #fff;
+}
+
+.error {
+    margin-top: 5px;
+    text-align: left;
+    color: #ed1a3d;
+}

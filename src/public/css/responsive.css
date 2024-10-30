@@ -1,0 +1,25 @@
+@media screen and (max-width: 959px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .align-items-center {
+        align-items: flex-start;
+    }
+
+    .search {
+        margin-top: 1rem;
+    }
+
+    .mypage {
+        flex-direction: column;
+    }
+
+    .status {
+        width: 100%;
+    }
+
+    .status__card {
+        width: 100%;
+    }
+}
